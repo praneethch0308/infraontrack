@@ -22,7 +22,7 @@ const VendorsPage = () => {
 
     useEffect(() => {
         getVendors();
-    }, [getVendors]);
+    }, []);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);

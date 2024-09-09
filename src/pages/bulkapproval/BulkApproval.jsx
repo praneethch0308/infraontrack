@@ -42,10 +42,10 @@ const BulkApproval = () => {
         if (event.target.checked) {
             const newSelecteds = employees.map((employee) => employee.id);
             setSelected(newSelecteds);
-            setShowCheckboxes(true);  // Show individual checkboxes after selecting all
+            setShowCheckboxes(true);  
         } else {
             setSelected([]);
-            setShowCheckboxes(false);  // Hide individual checkboxes if unselecting all
+            setShowCheckboxes(false);  
         }
     };
 
@@ -99,7 +99,6 @@ const BulkApproval = () => {
             </Grid>
             <Grid item xs style={{ paddingLeft: '20px', marginRight: '28px' }}>
                 <Toolbar />
-                
                 <Box display="flex" justifyContent="flex-end" mb={5} mt={2} className="w-full" >
                     <Box display="flex" justifyContent="space-between" mr={5} >
                         <Box mr={3}>
