@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add to your stylesheet */
+.sidebar-open {
+    margin-left: 0;
+}
+
+.sidebar-closed {
+    margin-left: -160px; /* Adjust based on your sidebar width */
+}
+
+.content-transition {
+    transition: margin-left 0.3s ease;
+}
+
+/* Ensure the content area has the proper padding */
+.content-padding {
+    padding-left: 240px; /* Adjust based on your sidebar width */
+}
