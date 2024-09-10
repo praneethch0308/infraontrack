@@ -63,7 +63,7 @@ const EmployeeCreate = () => {
         employee.email = email;
         employee.status = status;
         employee.deptInfoDto={id:department};
-
+console.log(employee)
         createEmployee(employee, navigate);
     };
 

@@ -23,7 +23,6 @@ export class LocationInfoDto {
         inchargePhone='';
         qrCode=[]
         deptInfoDto=new DeptInfoDto()
-        assetInchargeDto=new AssetInchargeDto();
 }
 const LocContext = createContext();
 

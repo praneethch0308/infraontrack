@@ -65,7 +65,6 @@ const BulkApproval = () => {
                 selected.slice(selectedIndex + 1)
             );
         }
-
         setSelected(newSelected);
     };
 

@@ -11,7 +11,7 @@ const LocationCreate = () => {
     const [formValues, setFormValues] = useState({
         name:'',
      incharge:'',
-     department:'',
+     department:[],
      branch:'',
      roomNum:'',
      phoneNumber:'',
@@ -24,6 +24,7 @@ const LocationCreate = () => {
             [name]: value,
         });
     };
+    
     const { createLoctn, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useLoctn();
     const { departments = [], getDepts } = useDept();
 
@@ -37,7 +38,7 @@ const LocationCreate = () => {
 
         const location = new LocationInfoDto()
         location.name=name
-        location.assetInchargeDto=incharge;
+        location.inchargeName=incharge;
         location.roomNum=roomNum;
         location.branch=branch;
         location.assetCount=assetCount;
