@@ -2,14 +2,49 @@ import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import { boolean } from 'zod';
+import { DeptInfoDto } from '../departments/DeptContext';
+import { LocationInfoDto } from '../locations/LocationContext';
+import { VendorInfoDto } from '../vendors/VendorContext';
 
-export class DeptInfoDto {
+export class AssetsDto {
 
-	  id=0;
-	  deptName='';
-	  hodName='';
-	  phoneNumber='';
-	  email='';
+	  id='';
+	  assetName='';
+	  make='';
+	  model='';
+	  isSerialized=this.Boolean;
+	  serialNo='';
+	  description='';
+	  imageUrl='';
+	  locName='';
+	  geoLocation='';
+	  value=0;
+	  purchaseDate='';
+	  warranty='';
+	  isWarrantyExpired=this.Boolean;
+	  isUnderWarranty=this.Boolean;
+	  userDept='';
+	  status='';
+	  isApprovedByHOD=this.Boolean;
+	  isApprovedByPrinicipal=this.Boolean;
+	  incharge='';
+	  qrCode=[]; 
+	  employeeId='';  
+	
+      deptInfoDto=new DeptInfoDto();
+    
+      locInfoDto=new LocationInfoDto();
+    
+      vendorInfoDto=new VendorInfoDto();
+    
+      assetInchargeDto;
+    
+      imgInfoDto;
+	
+
+		
+	
 }
 const AssetContext = createContext();
 
@@ -17,7 +52,7 @@ export const useAsset = () => {
     return useContext(AssetContext);
 };
 
-export const DeptProvider = ({ children }) => {
+export const AssetProvider = ({ children }) => {
     const [assets,setAssets]=useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');

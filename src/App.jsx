@@ -21,6 +21,8 @@ import BulkApproval from './pages/bulkapproval/BulkApproval';
 import Assets from './pages/assets/Assets';
 import LocationCreate from './pages/locations/LocationCreate';
 import { LocProvider } from './context/locations/LocationContext';
+import AssetCreate from './pages/assets/AssetCreate';
+import { AssetProvider } from './context/assets/AssetContext';
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
           <EmployeeState>
             <VendorProvider>
              <LocProvider>
+              <AssetProvider>
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route
@@ -129,7 +132,16 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/asset-create"
+                element={
+                  <ProtectedRoute>
+                    <AssetCreate />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
+            </AssetProvider>
             </LocProvider> 
             </VendorProvider>
           </EmployeeState>

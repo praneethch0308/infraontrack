@@ -63,7 +63,7 @@ const Assets = () => {
                     <Button
                         variant="contained"
                         className='bg-[#002a5c] rounded-3xl'
-                        onClick={() => navigate('/department-create')}
+                        onClick={() => navigate('/asset-create')}
                     >
                         <span className='font-semibold'>Create Asset</span>
                         <PersonAddAlt sx={{ height: '20px', width: '20px', ml: 1 }} />

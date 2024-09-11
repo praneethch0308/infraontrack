@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
         setSnackbarMessage('Logout successful!');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
-
+        
         setTimeout(() => {
             window.location.reload();
             navigate('/');

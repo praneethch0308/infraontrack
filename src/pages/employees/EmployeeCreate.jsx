@@ -32,6 +32,7 @@ const EmployeeCreate = () => {
         status: '',
         department:[]
     });
+    
     const [selectedImage, setSelectedImage] = useState(null);
     const { createEmployee, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useContext(EmployeeContext);
     const { departments = [], getDepts } = useDept();

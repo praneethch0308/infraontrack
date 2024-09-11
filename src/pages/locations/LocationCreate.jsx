@@ -24,7 +24,7 @@ const LocationCreate = () => {
             [name]: value,
         });
     };
-    
+
     const { createLoctn, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useLoctn();
     const { departments = [], getDepts } = useDept();
 
@@ -37,7 +37,7 @@ const LocationCreate = () => {
         const { name,department,incharge,branch,roomNum,assetCount,phoneNumber } = formValues;
 
         const location = new LocationInfoDto()
-        location.name=name
+        location.name=name;
         location.inchargeName=incharge;
         location.roomNum=roomNum;
         location.branch=branch;
