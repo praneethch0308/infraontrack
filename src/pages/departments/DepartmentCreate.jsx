@@ -25,17 +25,14 @@ const DepartmentCreate = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const { deptName,hodName,phoneNumber,email } = formValues;
-
         const department = new DeptInfoDto();
         department.deptName=deptName;
         department.hodName=hodName;
         department.phoneNumber=phoneNumber;
         department.email=email;
-
         createDept(department, navigate);
         console.log('Form Data:', formValues);
     };
-
   return (
     <div>
       <Grid container>
@@ -103,6 +100,7 @@ const DepartmentCreate = () => {
                     sx={{ mb: 2 , backgroundColor:'white'}}
                     className='rounded-md'
                 />
+
              </div>
              <div className='flex w-2/3 justify-between items-center'>
                 <FormLabel className='font-bold text-black w-1/3'>Alternate Phone Number </FormLabel>

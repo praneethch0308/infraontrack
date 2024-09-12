@@ -4,9 +4,9 @@ import { Checkbox, Button, TextField, FormControl, FormLabel, Grid, Typography, 
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import { useDept } from '../../context/departments/DeptContext';
 import Image from '@mui/icons-material/Image';
 import Sidebar from '../../components/Sidebar';
+import { useDept } from '../../context/departments/DeptContext';
 
 const AssetCreate = () => {
   const navigate = useNavigate();
@@ -32,8 +32,8 @@ const AssetCreate = () => {
     AMCendDate: ''
   });
   
-  const [selectedImage, setSelectedImage] = useState(null);
 
+  const [selectedImage, setSelectedImage] = useState(null);
   const { createAsset, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useAsset();
   const { departments = [], getDepts } = useDept();
 
@@ -103,7 +103,6 @@ const AssetCreate = () => {
             />
           </div>
 
-          {/* Description */}
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
               Description <span className="text-red-600">*</span>
@@ -119,7 +118,6 @@ const AssetCreate = () => {
             />
           </div>
 
-          {/* Type */}
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
               Type <span className="text-red-600">*</span>
@@ -264,8 +262,8 @@ const AssetCreate = () => {
                   className="w-full"
                 >
                   {departments.map(dept => (
-                    <MenuItem key={dept.id} value={dept.name}>
-                      {dept.name}
+                    <MenuItem key={dept.id} value={dept.deptName}>
+                      {dept.deptName}
                     </MenuItem>
                   ))}
                 </Select>

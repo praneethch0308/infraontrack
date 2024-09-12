@@ -3,16 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Divider, AppBar, Toolbar, Avatar, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
-import TaskIcon from '@mui/icons-material/Task';
-import PeopleIcon from '@mui/icons-material/People';
 import GroupIcon from '@mui/icons-material/Group';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import { useSidebar } from '../context/SidebarContext';
-import { AccountTree, CheckBox, CorporateFare, Devices, Key, LogoutSharp } from '@mui/icons-material';
+import { AccountTree, CheckBox, Devices, Key, LogoutSharp } from '@mui/icons-material';
 import { AuthProvider, useAuth } from '../context/auth/AuthContext';
 import { GiTakeMyMoney } from 'react-icons/gi';
+import LoadingSpinner from './loadingspinner/LoadingSpinner';
+
 
 const menuItems = [
     { path: '/leaddashboard', icon: <DashboardIcon />, label: 'Dashboard' },
@@ -28,8 +26,9 @@ const menuItems = [
 const Sidebar = () => {
     const { isOpened, toggleSidebar } = useSidebar();
     const [selectedItem, setSelectedItem] = useState('');
+    const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate();
-const {logout} = useAuth(); 
+    const { logout } = useAuth(); 
 
     useEffect(() => {
         const savedState = localStorage.getItem('sidebarOpened');
@@ -42,8 +41,13 @@ const {logout} = useAuth();
     }, [toggleSidebar]);
 
     const handleItemClick = (path) => {
+        setLoading(true); // Show loading spinner
         setSelectedItem(path);
-        navigate(path);
+        
+        setTimeout(() => {
+            navigate(path);
+            setLoading(false); // Hide spinner after navigation
+        }, 500); // Simulate loading delay (1.5 seconds)
     };
 
     const handleToggle = () => {
@@ -53,6 +57,7 @@ const {logout} = useAuth();
 
     return (
         <div style={{ display: 'flex' }}>
+            {/* App Bar */}
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#002a5c' }}>
                 <Toolbar>
                     <IconButton
@@ -68,6 +73,7 @@ const {logout} = useAuth();
                 </Toolbar>
             </AppBar>
 
+            {/* Sidebar Drawer */}
             <Drawer
                 variant="persistent"
                 open={isOpened}
@@ -106,7 +112,6 @@ const {logout} = useAuth();
                                 },
                             }}
                         >
-
                             <ListItemIcon
                                 sx={{
                                     color: 'white',
@@ -128,10 +133,13 @@ const {logout} = useAuth();
                 </List>
                 <Divider sx={{ color: 'white' }} />
                 <List sx={{ mt: '10px' }}  >
-                    <ListItem button onClick={()=>{ setTimeout(() => {
-                                        logout();
-                                        }, 1000)}} 
-                className='cursor-pointer'>
+                    <ListItem button onClick={() => { 
+                        setLoading(true);
+                        setTimeout(() => {
+                            logout();
+                            setLoading(false); // Hide loading after logout
+                        }, 1000); // Simulate logout delay
+                    }} className='cursor-pointer'>
                         <ListItemIcon sx={{ color: 'white' }}>
                             <LogoutSharp />
                         </ListItemIcon>
@@ -146,10 +154,11 @@ const {logout} = useAuth();
                 </List>
             </Drawer>
 
-            {/* Main content area */}
+     
+            {loading && <LoadingSpinner />} 
+
             <main style={{ flexGrow: 1, padding: '24px', marginLeft: isOpened ? 200 : 60 }}>
                 <Toolbar />
-                {/* Content goes here */}
             </main>
         </div>
     );
