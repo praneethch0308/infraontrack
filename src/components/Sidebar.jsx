@@ -41,13 +41,13 @@ const Sidebar = () => {
     }, [toggleSidebar]);
 
     const handleItemClick = (path) => {
-        setLoading(true); // Show loading spinner
+        setLoading(true); 
         setSelectedItem(path);
         
         setTimeout(() => {
             navigate(path);
-            setLoading(false); // Hide spinner after navigation
-        }, 500); // Simulate loading delay (1.5 seconds)
+            setLoading(false); 
+        }, 200); 
     };
 
     const handleToggle = () => {
@@ -73,7 +73,6 @@ const Sidebar = () => {
                 </Toolbar>
             </AppBar>
 
-            {/* Sidebar Drawer */}
             <Drawer
                 variant="persistent"
                 open={isOpened}

@@ -1,12 +1,28 @@
 import React from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
-import * as XLSX from "xlsx";
+import xlsx from "node-xlsx";
+import { saveAs } from "file-saver"; // To save the file
 
 const ExportToExcelButton = ({ tableId }) => {
   const exportTableToExcel = () => {
     const table = document.getElementById(tableId);
-    const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
-    XLSX.writeFile(workbook, `${tableId}.xlsx`);
+    const rows = Array.from(table.querySelectorAll("tr"));
+    
+   
+    const data = rows.map((row) => {
+      const cells = Array.from(row.querySelectorAll("th, td"));
+      return cells.map((cell) => cell.innerText);
+    });
+
+    // Create a worksheet with the data
+    const worksheet = [{ name: "Sheet1", data }];
+
+    // Generate the Excel buffer
+    const buffer = xlsx.build(worksheet);
+
+    // Trigger a download using file-saver
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    saveAs(blob, `${tableId}.xlsx`);
   };
 
   return (
