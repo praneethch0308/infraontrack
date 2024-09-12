@@ -4,11 +4,6 @@ import Sidebar from '../../components/Sidebar';
 import { PersonAddAlt } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
-
-
 const Assets = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(0);

@@ -19,5 +19,5 @@ export const SidebarProvider = ({ children }) => {
         <SidebarContext.Provider value={{ isOpened, toggleSidebar }}>
             {children}
         </SidebarContext.Provider>
-    );
+        );
 };

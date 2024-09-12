@@ -28,20 +28,18 @@ export const AuthProvider = ({ children }) => {
                 userName: username,
                 password: password,
             });
-    
+            
+           
             if (response.status === 200) {
                 const token = response.data;
                 localStorage.setItem('token', token);
-    
                 const decodedToken = jwtDecode(token);
                 setUsername(decodedToken.sub);
                 setRole(decodedToken.roles[0]);
                 setisFirstLogin(decodedToken.isFirstLogin);
-    
                 setSnackbarMessage('Login successful!');
                 setSnackbarSeverity('success');
                 setSnackbarOpen(true);
-    
                 setTimeout(() => {
                     if (decodedToken.isFirstLogin) {
                         navigate('/change-password');
@@ -57,14 +55,11 @@ export const AuthProvider = ({ children }) => {
         }
     };
     
-    
-
     const logout = () => {
         localStorage.removeItem('token');
         setSnackbarMessage('Logout successful!');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
-        
         setTimeout(() => {
             window.location.reload();
             navigate('/');

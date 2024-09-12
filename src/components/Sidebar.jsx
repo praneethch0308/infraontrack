@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Divider, AppBar, Toolbar, Avatar, Box } from '@mui/material';
+import {
+    Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Divider,
+    AppBar, Toolbar, Avatar, Box, Dialog, DialogActions, DialogContent,
+    DialogContentText, DialogTitle, Button
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useSidebar } from '../context/SidebarContext';
-import { AccountTree, CheckBox, Devices, Key, LogoutSharp } from '@mui/icons-material';
-import { AuthProvider, useAuth } from '../context/auth/AuthContext';
+import { AccountTree, CheckBox, Devices, Key, LogoutSharp, ReportProblem } from '@mui/icons-material';
 import { GiTakeMyMoney } from 'react-icons/gi';
 import LoadingSpinner from './loadingspinner/LoadingSpinner';
-
+import { useAuth } from '../context/auth/AuthContext';
 
 const menuItems = [
     { path: '/leaddashboard', icon: <DashboardIcon />, label: 'Dashboard' },
@@ -26,7 +29,8 @@ const menuItems = [
 const Sidebar = () => {
     const { isOpened, toggleSidebar } = useSidebar();
     const [selectedItem, setSelectedItem] = useState('');
-    const [loading, setLoading] = useState(false); // Add loading state
+    const [loading, setLoading] = useState(false); 
+    const [openDialog, setOpenDialog] = useState(false);
     const navigate = useNavigate();
     const { logout } = useAuth(); 
 
@@ -35,7 +39,6 @@ const Sidebar = () => {
         if (savedState !== null) {
             toggleSidebar(JSON.parse(savedState));
         }
-
         const currentPath = window.location.pathname;
         setSelectedItem(currentPath);
     }, [toggleSidebar]);
@@ -47,7 +50,7 @@ const Sidebar = () => {
         setTimeout(() => {
             navigate(path);
             setLoading(false); 
-        }, 200); 
+        }, 1000); 
     };
 
     const handleToggle = () => {
@@ -55,9 +58,24 @@ const Sidebar = () => {
         localStorage.setItem('sidebarOpened', JSON.stringify(!isOpened));
     };
 
+    const handleConfirmApprove = () => {
+        setLoading(true); 
+        setTimeout(() => {
+            logout();
+            setLoading(false); 
+        }, 1000);  
+    };
+
+    const handleDialogClose = () => {
+        setOpenDialog(false);
+    };
+
+    const handleLogoutClick = () => {
+        setOpenDialog(true); 
+    };
+
     return (
         <div style={{ display: 'flex' }}>
-            {/* App Bar */}
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#002a5c' }}>
                 <Toolbar>
                     <IconButton
@@ -74,21 +92,22 @@ const Sidebar = () => {
             </AppBar>
 
             <Drawer
-                variant="persistent"
-                open={isOpened}
-                sx={{
-                    width: isOpened ? 240 : 60,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: isOpened ? 240 : 60,
-                        boxSizing: 'border-box',
-                        backgroundColor: '#002a5c',
-                        color: 'white',
-                        overflowX: 'hidden',
-                        display: 'flex',
-                        flexDirection: 'column',
-                    },
-                }}
+              variant="persistent"
+              anchor="left"
+              open={isOpened}
+              sx={{
+                width: isOpened ? 240 : 60, 
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                  width: isOpened ? 240 : 60,
+                  boxSizing: 'border-box',
+                  backgroundColor: '#002a5c',
+                  color: 'white',
+                  overflowX: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column',
+                },
+              }}
             >
                 <Toolbar />
                 <List>
@@ -114,8 +133,8 @@ const Sidebar = () => {
                             <ListItemIcon
                                 sx={{
                                     color: 'white',
-                                    minWidth: 40, // Ensure icons have a minimum width
-                                    justifyContent: 'center',
+                                    minWidth: 60,
+                                    justifyContent: 'start',
                                 }}
                             >
                                 {item.icon}
@@ -131,14 +150,8 @@ const Sidebar = () => {
                     ))}
                 </List>
                 <Divider sx={{ color: 'white' }} />
-                <List sx={{ mt: '10px' }}  >
-                    <ListItem button onClick={() => { 
-                        setLoading(true);
-                        setTimeout(() => {
-                            logout();
-                            setLoading(false); // Hide loading after logout
-                        }, 1000); // Simulate logout delay
-                    }} className='cursor-pointer'>
+                <List sx={{ mt: '10px' }}>
+                    <ListItem button onClick={handleLogoutClick} className='cursor-pointer'>
                         <ListItemIcon sx={{ color: 'white' }}>
                             <LogoutSharp />
                         </ListItemIcon>
@@ -153,10 +166,29 @@ const Sidebar = () => {
                 </List>
             </Drawer>
 
-     
+            <Dialog open={openDialog} onClose={handleDialogClose}>
+                <DialogTitle sx={{ fontWeight: 'bold' }}>Logout</DialogTitle>
+                <DialogContent>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+                        <ReportProblem color="error" sx={{ fontSize: 50 }} />
+                    </Box>
+                    <DialogContentText sx={{ color: 'black' }}>
+                        Are you sure you want to Logout?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleConfirmApprove} sx={{ backgroundColor: 'green', color: 'white', borderRadius: '18px' }}>
+                        Confirm
+                    </Button>
+                    <Button onClick={handleDialogClose} sx={{ backgroundColor: 'red', color: 'white', borderRadius: '18px' }}>
+                        Cancel
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             {loading && <LoadingSpinner />} 
 
-            <main style={{ flexGrow: 1, padding: '24px', marginLeft: isOpened ? 200 : 60 }}>
+            <main style={{ flexGrow: 1, padding: '24px', marginLeft: isOpened ? 240 : 60 }}>
                 <Toolbar />
             </main>
         </div>
