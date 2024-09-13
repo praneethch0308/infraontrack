@@ -166,12 +166,12 @@ const Sidebar = () => {
                 </List>
             </Drawer>
 
-            <Dialog open={openDialog} onClose={handleDialogClose}>
-                <DialogTitle sx={{ fontWeight: 'bold' }}>Logout</DialogTitle>
+            <Dialog open={openDialog} onClose={handleDialogClose} >
+                <DialogTitle sx={{ fontWeight: 'bold' }}>Confirm Logout</DialogTitle>
                 <DialogContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
-                        <ReportProblem color="error" sx={{ fontSize: 50 }} />
-                    </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+                <img src="doubtful.png" alt="doubtful" style={{ width: '50px', height: '50px' }} />
+                </Box>
                     <DialogContentText sx={{ color: 'black' }}>
                         Are you sure you want to Logout?
                     </DialogContentText>

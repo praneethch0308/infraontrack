@@ -7,6 +7,18 @@ import { DeptInfoDto } from '../departments/DeptContext';
 import { LocationInfoDto } from '../locations/LocationContext';
 import { VendorInfoDto } from '../vendors/VendorContext';
 
+export class ImageInfoDto {
+	  id='';
+	  imgName='';
+}
+
+ export class AssetInchargeDto {
+	  id='';
+	  inchargeName='';
+	  inchargePhno='';
+	  employeeId='';
+     }
+
 export class AssetsDto {
 
 	  id='';
@@ -38,14 +50,12 @@ export class AssetsDto {
     
       vendorInfoDto=new VendorInfoDto();
     
-      assetInchargeDto;
+      assetInchargeDto= new AssetInchargeDto();
     
-      imgInfoDto;
-	
-
-		
-	
+      imgInfoDto= new ImageInfoDto();	
 }
+
+
 const AssetContext = createContext();
 
 export const useAsset = () => {

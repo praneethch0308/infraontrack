@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useAsset } from '../../context/assets/AssetContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { AssetsDto, useAsset } from '../../context/assets/AssetContext';
 import { Checkbox, Button, TextField, FormControl, FormLabel, Grid, Typography, Box, MenuItem, Select, InputLabel, Snackbar } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import { styled } from '@mui/system';
@@ -7,35 +7,46 @@ import { useNavigate } from 'react-router-dom';
 import Image from '@mui/icons-material/Image';
 import Sidebar from '../../components/Sidebar';
 import { useDept } from '../../context/departments/DeptContext';
+import EmployeeContext from '../../context/employees/EmployeeContext';
 
 const AssetCreate = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({
     assetName: '',
     description: '',
-    type: '',
-    subType: '',
+    // type: '',
+    // subType: '',
     make: '',
     model: '',
     value: '',
     status: '',
-    location: '',
-    incharge: '',
-    userDept: '',
+    geoLocation:'',
+    // incharge: '',
+    // userDept: '',
     phoneNumber: '',
     purchaseDate: '',
     isSerialized: false,
     isUnderWarranty: false,
     isUnderAmc: false,
+    isApprovedByHOD:false,
+    isApprovedByPrinicipal:false,
     serialNo: '',
-    warrantyEndDate: '',
-    AMCendDate: ''
+    warranty: '',
+    AMCendDate: '',
+    deptInfoDto:{},
+    locInfoDto:{},
+    vendorInfoDto:{},
+    assetInchargeDto:{},
+
+
   });
   
 
   const [selectedImage, setSelectedImage] = useState(null);
   const { createAsset, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useAsset();
   const { departments = [], getDepts } = useDept();
+  const context= useContext(EmployeeContext);
+  const {employees=[],getEmployees}=context;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -47,22 +58,41 @@ const AssetCreate = () => {
 
   useEffect(() => {
     getDepts();
+    getEmployees();
   }, []);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setSelectedImage(URL.createObjectURL(file));
   };
-
+const asset= new AssetsDto();
   const handleSubmit = (e) => {
     e.preventDefault();
     const assetData = {
       ...formValues,
-      department: formValues.userDept,
-    };
     
+    };
+    asset.assetName=assetData.assetName;
+    asset.make=assetData.make;
+    asset.model=assetData.model;
+    asset.isSerialized=assetData.isSerialized;
+    asset.serialNo=assetData.serialNo;
+    asset.description=assetData.description;
+    asset.purchaseDate=assetData.purchaseDate;
+    asset.warranty=assetData.warranty;
+    asset.isWarrantyExpired=assetData.isWarrantyExpired;
+    asset.status=assetData.status;
+    asset.isApprovedByHOD=assetData.isApprovedByHOD;
+    asset.isApprovedByPrinicipal=assetData.isApprovedByPrinicipal;
+    asset.deptInfoDto=assetData.deptInfoDto;
+    asset.locInfoDto=assetData.locInfoDto;
+    asset.assetInchargeDto=assetData.assetInchargeDto;
+
+
+
     createAsset(assetData, navigate);
   };
+
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -82,7 +112,7 @@ const AssetCreate = () => {
         <Grid item style={{ width: '240px' }}>
           <Sidebar />
         </Grid>
-
+        
         <form onSubmit={handleSubmit} className="w-full ml-[240px] bg-neutral-200 rounded-lg p-5 mr-5">
           <Typography component="h1" variant="h5" sx={{ mb: 3, fontWeight: 'bold' }}>
             Create Asset
@@ -118,7 +148,7 @@ const AssetCreate = () => {
             />
           </div>
 
-          <div className="flex w-2/3 justify-between items-center">
+          {/* <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
               Type <span className="text-red-600">*</span>
             </FormLabel>
@@ -156,7 +186,7 @@ const AssetCreate = () => {
                 </Select>
               </FormControl>
             </Box>
-          </div>
+          </div> */}
 
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
@@ -204,19 +234,27 @@ const AssetCreate = () => {
           </div>
 
           <div className="flex w-2/3 justify-between items-center">
-            <FormLabel className="font-bold text-black w-1/3">
-              Status <span className="text-red-600">*</span>
-            </FormLabel>
-            <TextField
-              fullWidth
-              label="Enter Status"
-              name="status"
-              value={formValues.status}
-              onChange={handleChange}
-              sx={{ mb: 2, backgroundColor: 'white' }}
-              className="w-full rounded-md"
-            />
-          </div>
+                    <FormLabel className="font-bold text-black w-1/3">
+                             Status <span className="text-red-600">*</span>
+                        </FormLabel>
+                    <Box className="w-full bg-white mb-3 rounded-md">
+                        <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                name='status'
+                                value={formValues.status}
+                                label="status"
+                                onChange={handleChange}
+                                className='w-full'
+                             >
+                                <MenuItem value={"Active"}>Active</MenuItem>
+                                <MenuItem value={"In-Active"}>In Active</MenuItem>
+                               
+                            </Select>
+                        </FormControl>
+                        </Box>
+                    </div>
 
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
@@ -225,8 +263,8 @@ const AssetCreate = () => {
             <TextField
               fullWidth
               label="Enter Location"
-              name="location"
-              value={formValues.location}
+              name="locInfoDto"
+              value={formValues.locInfoDto}
               onChange={handleChange}
               sx={{ mb: 2, backgroundColor: 'white' }}
               className="w-full rounded-md"
@@ -235,18 +273,27 @@ const AssetCreate = () => {
 
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
-              Incharge <span className="text-red-600">*</span>
+            Incharge Name <span className="text-red-600">*</span>
             </FormLabel>
-            <TextField
-              fullWidth
-              label="Enter Incharge"
-              name="incharge"
-              value={formValues.incharge}
-              onChange={handleChange}
-              sx={{ mb: 2, backgroundColor: 'white' }}
-              className="w-full rounded-md"
-            />
+            <Box className="w-full bg-white mb-3 rounded-md">
+              <FormControl fullWidth>
+                <InputLabel>Incharge Name</InputLabel>
+                <Select
+                  name="assetInchargeDto"
+                  value={formValues.assetInchargeDto}
+                  onChange={handleChange}
+                  className="w-full"
+                >
+                  {employees.map(emp => (
+                    <MenuItem key={emp.id} value={emp.id}>
+                      {emp.name} 
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
           </div>
+
 
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
@@ -262,7 +309,7 @@ const AssetCreate = () => {
                   className="w-full"
                 >
                   {departments.map(dept => (
-                    <MenuItem key={dept.id} value={dept.deptName}>
+                    <MenuItem key={dept.id} value={dept.id}>
                       {dept.deptName}
                     </MenuItem>
                   ))}
