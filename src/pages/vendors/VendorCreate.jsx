@@ -249,7 +249,7 @@ const VendorCreate = () => {
                             </FormControl>
                         </Box>
                     </div>
-
+                <Grid className='bg-white p-4 rounded-lg'>
                     <Typography variant="h6" sx={{ mb: 2, fontWeight: 'bold' }}>
                         Contact Info
                     </Typography>
@@ -355,6 +355,7 @@ const VendorCreate = () => {
                     ) : (
                         <Typography>No contacts added</Typography>
                     )}
+                    </Grid>
                     <Grid container justifyContent="center">
                         <Button variant="contained" color="primary" type="submit">
                             Submit
