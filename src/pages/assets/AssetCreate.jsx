@@ -349,6 +349,21 @@ const asset= new AssetsDto();
             />
           </div>
 
+          <div className="flex w-2/3 items-center">
+            <FormLabel className="font-bold text-black w-1/3">
+             Is Serialized <span className="text-red-600">*</span>
+            </FormLabel>
+            <Checkbox
+              fullWidth
+              name="isSerialized"
+              value={formValues.isSerialized}
+              onChange={handleChange}
+              sx={{ mb: 2}}
+              type="checkbox"
+              className="rounded-md justify-start"
+            />
+          </div>
+
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
               Serial No. <span className="text-red-600">*</span>

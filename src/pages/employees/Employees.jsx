@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Toolbar, Button, Box, TablePagination, Avatar } from '@mui/material';
+import {  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Toolbar, Button, Box, TablePagination, Avatar, Grid2, Grid } from '@mui/material';
 import Sidebar from '../../components/Sidebar';
 import { PersonAddAlt } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -33,13 +33,12 @@ const Employees = () => {
         : [];
 
     return (
-        <Grid container>
+        <Grid2 container>
             <Grid item style={{ width: '240px' }}>
                 <Sidebar />
             </Grid>
             <Grid item xs style={{ paddingLeft: '20px', marginRight: '28px' }}>
                 <Toolbar />
-                
                 <Box display="flex" justifyContent="flex-end" mb={5} mt={2} className="w-full" >
                     <Box display="flex" justifyContent="space-between" mr={5} >
                         <Box mr={3}>
@@ -87,14 +86,14 @@ const Employees = () => {
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10, 25, 50]}
                     component="div"
-                    count={Array.isArray(employees) ? employees.length : 0}  // Ensure employees is an array
+                    count={Array.isArray(employees) ? employees.length : 0} 
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Grid>
-        </Grid>
+        </Grid2>
     );
 };
 

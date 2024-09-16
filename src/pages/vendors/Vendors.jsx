@@ -117,9 +117,9 @@ const VendorsPage = () => {
                                 <TableCell>Company Type</TableCell>
                             </TableRow>
                         </TableHead>
-                        <TableBody>
+                        <TableBody >
                             {paginatedVendors.map((vendor) => (
-                                <TableRow key={vendor.id}>
+                                <TableRow key={vendor.id} sx={{backgroundColor:'white'}}>
                                     <TableCell>{vendor.companyName}</TableCell>
                                     <TableCell>{vendor.address}</TableCell>
                                     <TableCell>{vendor.email}</TableCell>
