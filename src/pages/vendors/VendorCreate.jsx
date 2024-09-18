@@ -11,7 +11,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-// Define validation schema for vendor
+
 const vendorSchema = z.object({
     companyName: z.string().min(1, "Company Name is required"),
     address: z.string().min(1, "Address is required"),
@@ -21,7 +21,7 @@ const vendorSchema = z.object({
     companyType: z.string().min(1, "Company Type is required"),
 });
 
-// Define validation schema for contact
+
 const contactSchema = z.object({
     name: z.string().min(1, "Contact Name is required"),
     phone: z.string().min(1, "Phone Number is required"),
@@ -98,7 +98,6 @@ const VendorCreate = () => {
                         Create Vendor
                     </Typography>
 
-                    {/* Vendor Info */}
                     <Grid className='flex w-2/3 justify-between items-center'>
                         <FormLabel className='font-bold text-black w-1/3'>
                             Company Name <span className='text-red-600'>*</span>
