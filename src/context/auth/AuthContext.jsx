@@ -28,8 +28,6 @@ export const AuthProvider = ({ children }) => {
                 userName: username,
                 password: password,
             });
-            
-           
             if (response.status === 200) {
                 const token = response.data;
                 localStorage.setItem('token', token);

@@ -50,7 +50,7 @@ const Sidebar = () => {
         setTimeout(() => {
             navigate(path);
             setLoading(false); 
-        }, 1000); 
+        }, 500); 
     };
 
     const handleToggle = () => {
@@ -63,7 +63,7 @@ const Sidebar = () => {
         setTimeout(() => {
             logout();
             setLoading(false); 
-        }, 1000);  
+        }, 500);  
     };
 
     const handleDialogClose = () => {
@@ -91,23 +91,8 @@ const Sidebar = () => {
                 </Toolbar>
             </AppBar>
 
-            <Drawer
-              variant="persistent"
-              anchor="left"
-              open={isOpened}
-              sx={{
-                width: isOpened ? 240 : 60, 
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                  width: isOpened ? 240 : 60,
-                  boxSizing: 'border-box',
-                  backgroundColor: '#002a5c',
-                  color: 'white',
-                  overflowX: 'hidden',
-                  display: 'flex',
-                  flexDirection: 'column',
-                },
-              }}
+            <div className={`fixed top-0 left-0 h-full bg-[#002a5c] text-white flex flex-col transition-all duration-500
+                ${isOpened ? 'w-60' : 'w-16'}`}
             >
                 <Toolbar />
                 <List>
@@ -120,7 +105,7 @@ const Sidebar = () => {
                             className={`${selectedItem === item.path ? 'bg-blue-900 rounded-3xl' : ''} cursor-pointer mt-1 mb-1`}
                             sx={{
                                 width: '100%',
-                                justifyContent: isOpened ? 'flex-start' : 'center',
+                                justifyContent: 'center',
                                 padding: isOpened ? '8px 16px' : '8px',
                                 '&.Mui-selected': {
                                     backgroundColor: '#003a6c',
@@ -134,7 +119,7 @@ const Sidebar = () => {
                                 sx={{
                                     color: 'white',
                                     minWidth: 60,
-                                    justifyContent: 'start',
+                                    justifyContent:'center'
                                 }}
                             >
                                 {item.icon}
@@ -164,7 +149,7 @@ const Sidebar = () => {
                         )}
                     </ListItem>
                 </List>
-            </Drawer>
+            </div>
 
             <Dialog open={openDialog} onClose={handleDialogClose} >
                 <DialogTitle sx={{ fontWeight: 'bold' }}>Confirm Logout</DialogTitle>

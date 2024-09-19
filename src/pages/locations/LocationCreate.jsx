@@ -83,6 +83,7 @@ const LocationCreate = () => {
                             <Select
                                 labelId="demo-simple-select-label"
                                 name='department'
+                                required
                                 value={formValues.department}
                                 label="Department"
                                 onChange={handleChange}
@@ -140,11 +141,12 @@ const LocationCreate = () => {
                 />
              </div>
              <div className='flex w-2/3 justify-between items-center'>
-                <FormLabel className='font-bold text-black w-1/3'>Room Number </FormLabel>
+                <FormLabel className='font-bold text-black w-1/3'>Room Number <span className='text-red-600'>*</span> </FormLabel>
                 <TextField
                     fullWidth
-                    label="Enter Alt Phone Number"
+                    label="Enter Room Number"
                     name="roomNum"
+                    required
                     value={formValues.roomNum}
                     onChange={handleChange}
                     type="tel"
@@ -158,7 +160,7 @@ const LocationCreate = () => {
                  <TextField
                     fullWidth
                     required
-                    label={"Enter Hod Name"}
+                    label={"Enter Asset Count"}
                     name="assetCount"
                     value={formValues.assetCount}
                     onChange={handleChange}
