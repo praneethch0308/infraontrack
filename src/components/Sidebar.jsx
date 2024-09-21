@@ -16,7 +16,7 @@ import LoadingSpinner from './loadingspinner/LoadingSpinner';
 import { useAuth } from '../context/auth/AuthContext';
 
 const menuItems = [
-    { path: '/leaddashboard', icon: <DashboardIcon />, label: 'Dashboard' },
+    { path: '/dashboard', icon: <DashboardIcon />, label: 'Dashboard' },
     { path: '/assets', icon: <Devices />, label: 'Assets' },
     { path: '/vendors', icon: <GiTakeMyMoney className='h-7 w-7' />, label: 'Vendors' },
     { path: '/employees', icon: <GroupIcon />, label: 'Employees' },

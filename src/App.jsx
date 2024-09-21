@@ -23,6 +23,7 @@ import LocationCreate from './pages/locations/LocationCreate';
 import { LocProvider } from './context/locations/LocationContext';
 import AssetCreate from './pages/assets/AssetCreate';
 import { AssetProvider } from './context/assets/AssetContext';
+import Dashboard from './pages/dashboards/Dashboard';
 
 function App() {
   return (
@@ -57,6 +58,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Employees />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
                   </ProtectedRoute>
                 }
               />

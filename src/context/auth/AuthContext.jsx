@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
                     if (decodedToken.isFirstLogin) {
                         navigate('/change-password');
                     } else {
-                        navigate('/home');
+                        navigate('/dashboard');
                     }
                 }, 1000);  
             }
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
                 setSnackbarSeverity('success');
                 setSnackbarOpen(true);
                 setTimeout(() => {
-                    navigate('/home');
+                    navigate('/dashboard');
                 }, 1000);
             
             }

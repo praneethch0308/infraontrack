@@ -21,6 +21,7 @@ const ProtectedRoute = ({ children }) => {
             logout();
             return <Navigate to="/" />;
         }
+        
     } catch (error) {
         logout();
         return <Navigate to="/" />;
