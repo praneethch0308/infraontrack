@@ -10,7 +10,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useSidebar } from '../context/SidebarContext';
-import { AccountTree, CheckBox, Devices, Key, LogoutSharp, ReportProblem } from '@mui/icons-material';
+import { AccountTree, CheckBox, Devices, Key, LogoutSharp } from '@mui/icons-material';
 import { GiTakeMyMoney } from 'react-icons/gi';
 import LoadingSpinner from './loadingspinner/LoadingSpinner';
 import { useAuth } from '../context/auth/AuthContext';
@@ -74,6 +74,8 @@ const Sidebar = () => {
         setOpenDialog(true); 
     };
 
+    const userName = localStorage.getItem('userName');
+
     return (
         <div style={{ display: 'flex' }}>
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#002a5c' }}>
@@ -93,9 +95,12 @@ const Sidebar = () => {
 
             <div className={`fixed top-0 left-0 h-full bg-[#002a5c] text-white flex flex-col transition-all duration-500
                 ${isOpened ? 'w-60' : 'w-16'}`}
+                style={{ overflowY: 'auto', height: '100vh' }}  
             >
                 <Toolbar />
                 <List>
+                    <div className='ml-8 mr-8 mt-3 text-white'>{userName}</div>
+                    
                     {menuItems.map((item) => (
                         <ListItem
                             button
@@ -119,7 +124,7 @@ const Sidebar = () => {
                                 sx={{
                                     color: 'white',
                                     minWidth: 60,
-                                    justifyContent:'center'
+                                    justifyContent: 'center'
                                 }}
                             >
                                 {item.icon}
@@ -151,12 +156,12 @@ const Sidebar = () => {
                 </List>
             </div>
 
-            <Dialog open={openDialog} onClose={handleDialogClose} >
+            <Dialog open={openDialog} onClose={handleDialogClose}>
                 <DialogTitle sx={{ fontWeight: 'bold' }}>Confirm Logout</DialogTitle>
                 <DialogContent>
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
-                <img src="doubtful.png" alt="doubtful" style={{ width: '50px', height: '50px' }} />
-                </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+                        <img src="doubtful.png" alt="doubtful" style={{ width: '50px', height: '50px' }} />
+                    </Box>
                     <DialogContentText sx={{ color: 'black' }}>
                         Are you sure you want to Logout?
                     </DialogContentText>

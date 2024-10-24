@@ -49,6 +49,7 @@ export const VendorProvider = ({ children }) => {
           console.error("Error fetching vendors data:", error);
         }
       };
+      
 const createVendor = async (vendor, navigate) => {
     try {
         const response = await axios.post(`${baseURl}/vendor/save`, vendor);

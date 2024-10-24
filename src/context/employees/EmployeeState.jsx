@@ -9,7 +9,7 @@ const EmployeeState =(props)=>{
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-const accessToken=localStorage.getItem('token')
+const accessToken=localStorage.getItem('token');
     const getEmployees = async () => {
         try {
           const response = await axios.get(`${host}/employees/all`, {
@@ -23,12 +23,10 @@ const accessToken=localStorage.getItem('token')
       const createEmployee = async (employee, navigate) => {
         try {
             const response = await axios.post(`${host}/employees/save`, employee);
-
             if (response.status === 200) {
                 setSnackbarMessage('Employee created successfully!');
                 setSnackbarSeverity('success');
                 setSnackbarOpen(true);
-
                 setTimeout(() => {
                     navigate("/employees");
                 }, 1000);

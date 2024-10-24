@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }) => {
                 setRole(decodedToken.roles[0]);
                 setisFirstLogin(decodedToken.isFirstLogin);
                 setSnackbarMessage('Login successful!');
+                localStorage.setItem('userName',username);
                 setSnackbarSeverity('success');
                 setSnackbarOpen(true);
                 setTimeout(() => {

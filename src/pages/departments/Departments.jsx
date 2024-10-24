@@ -65,7 +65,7 @@ const Departments = () => {
                     <Box display={'flex'} alignItems={'center'} mb={3}>
                         <Typography className="font-bold">Department Name : </Typography>
                         <Autocomplete 
-                            options={departments.map(department => department.deptName || '')} 
+                            options={Array.isArray(departments) &&departments.map(department => department.deptName || '')} 
                             value={filters.deptName || null}
                             onChange={(event, newValue) => handleAutoCompleteChange(event, newValue, 'deptName')}
                             renderInput={(params) => <TextField {...params} label="Select Dept Name" />}

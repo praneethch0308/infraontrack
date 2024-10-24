@@ -3,6 +3,7 @@ import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { DeptInfoDto } from '../departments/DeptContext';
+import { Employee } from '../../pages/employees/EmployeeCreate';
 
 export class AssetInchargeDto {
 	  id='';
@@ -22,8 +23,12 @@ export class LocationInfoDto {
         inchargeName='';
         inchargePhone='';
         qrCode=[]
-        deptInfoDto=new DeptInfoDto()
+        deptInfoDto=new DeptInfoDto();
+        employeeDto= new Employee()
+ 
 }
+
+
 const LocContext = createContext();
 
 export const useLoctn = () => {
@@ -32,6 +37,7 @@ export const useLoctn = () => {
 
 export const LocProvider = ({ children }) => {
     const [locations,setLocations]=useState([]);
+    const [employees,setEmployees]=useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -42,8 +48,8 @@ export const LocProvider = ({ children }) => {
         try {
           const response = await axios.get(`${baseURl}/Locations/getAllLocations`, {
           });
-          setLocations(response.data);
-          console.log(response.data)
+          setLocations(response.data.data);
+          console.log(response.data.data)
         } catch (error) {
           console.error("Error fetching employees data:", error);
         }
@@ -68,6 +74,8 @@ const createLoctn = async (location, navigate) => {
         setSnackbarOpen(true);
     }
 };
+
+
 
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);

@@ -152,7 +152,7 @@ const EmployeeCreate = () => {
                                 <FormControl fullWidth sx={{ mb: 3, backgroundColor: 'white' }}>
                                     <InputLabel>Department</InputLabel>
                                     <Select {...field} error={!!errors.department}>
-                                        {departments.map(dept => (
+                                        {Array.isArray(departments) &&departments.map(dept => (
                                             <MenuItem key={dept.id} value={dept.id}>
                                                 {dept.deptName}
                                             </MenuItem>
