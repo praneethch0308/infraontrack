@@ -24,6 +24,11 @@ import { LocProvider } from './context/locations/LocationContext';
 import AssetCreate from './pages/assets/AssetCreate';
 import { AssetProvider } from './context/assets/AssetContext';
 import Dashboard from './pages/dashboards/Dashboard';
+import Lists from './pages/lists/Lists';
+import AddList from './pages/lists/AddList';
+import { ListProvider } from './context/lists/ListContext';
+import AddListitem from './pages/lists/AddListitem';
+import AddSubList from './pages/lists/AddSubList';
 
 function App() {
   return (
@@ -35,6 +40,7 @@ function App() {
             <VendorProvider>
              <LocProvider>
               <AssetProvider>
+                <ListProvider>
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route
@@ -82,6 +88,39 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Departments />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/lists"
+                element={
+                  <ProtectedRoute>
+                    <Lists />
+                  </ProtectedRoute>
+                }
+              />
+
+                <Route
+                path="/add-lists"
+                element={
+                  <ProtectedRoute>
+                    <AddList />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/add-listitem"
+                element={
+                  <ProtectedRoute>
+                    <AddListitem />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/add-sublistitem"
+                element={
+                  <ProtectedRoute>
+                    <AddSubList />
                   </ProtectedRoute>
                 }
               />
@@ -150,6 +189,7 @@ function App() {
                 }
               />
             </Routes>
+            </ListProvider>
             </AssetProvider>
             </LocProvider> 
             </VendorProvider>

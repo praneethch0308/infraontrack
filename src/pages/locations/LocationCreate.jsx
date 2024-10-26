@@ -29,8 +29,6 @@ const LocationCreate = () => {
 
     const [employees, setEmployees] = useState([]);
     const { locname, department, incharge, branch, roomNum, phoneNumber } = formValues;
-
-    // Ensure that department is a string before splitting
     const [deptid, deptName] = department ? department.split(" || ") : ['', ''];
     const [id, name] = incharge ? incharge.split(" || ") : ['', ''];
     
@@ -48,7 +46,7 @@ const LocationCreate = () => {
 
     useEffect(() => {
         getEmployees();
-    }, [deptid]); // Added deptid as a dependency
+    }, [deptid]); 
 
     const { createLoctn, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useLoctn();
     const { departments = [], getDepts } = useDept();

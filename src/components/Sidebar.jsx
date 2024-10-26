@@ -10,7 +10,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useSidebar } from '../context/SidebarContext';
-import { AccountTree, CheckBox, Devices, Key, LogoutSharp } from '@mui/icons-material';
+import { AccountTree, CheckBox, Devices, Key, ListAlt, LogoutSharp } from '@mui/icons-material';
 import { GiTakeMyMoney } from 'react-icons/gi';
 import LoadingSpinner from './loadingspinner/LoadingSpinner';
 import { useAuth } from '../context/auth/AuthContext';
@@ -23,7 +23,8 @@ const menuItems = [
     { path: '/locations', icon: <LocationOnIcon />, label: 'Locations' },
     { path: '/departments', icon: <AccountTree />, label: 'Departments' },
     { path: '/bulk-approval', icon: <CheckBox />, label: 'Bulk Approval' },
-    { path: '/change-password', icon: <Key />, label: 'Change Password' }
+    { path: '/change-password', icon: <Key />, label: 'Change Password' },
+    { path: '/lists', icon: <ListAlt />, label: 'Lists' }
 ];
 
 const Sidebar = () => {

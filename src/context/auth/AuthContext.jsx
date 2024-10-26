@@ -32,20 +32,24 @@ export const AuthProvider = ({ children }) => {
                 const token = response.data;
                 localStorage.setItem('token', token);
                 const decodedToken = jwtDecode(token);
+                console.log('Decoded Token:', decodedToken);
                 setUsername(decodedToken.sub);
-                setRole(decodedToken.roles[0]);
                 setisFirstLogin(decodedToken.isFirstLogin);
+                const roles = decodedToken.roles[0] || [];
+                setRole(roles);
+                console.log('Roles:', roles); 
                 setSnackbarMessage('Login successful!');
-                localStorage.setItem('userName',username);
                 setSnackbarSeverity('success');
                 setSnackbarOpen(true);
+                localStorage.setItem('userName', username);
+                localStorage.setItem('role', JSON.stringify(roles));
                 setTimeout(() => {
                     if (decodedToken.isFirstLogin) {
                         navigate('/change-password');
                     } else {
                         navigate('/dashboard');
                     }
-                }, 1000);  
+                }, 1000);
             }
         } catch (error) {
             setSnackbarMessage('Invalid credentials');
@@ -53,6 +57,7 @@ export const AuthProvider = ({ children }) => {
             setSnackbarOpen(true);
         }
     };
+    
     
     const logout = () => {
         localStorage.removeItem('token');

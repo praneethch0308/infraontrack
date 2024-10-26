@@ -11,34 +11,35 @@ import EmployeeContext from '../../context/employees/EmployeeContext';
 
 const AssetCreate = () => {
   const navigate = useNavigate();
-  const [formValues, setFormValues] = useState({
-    assetName: '',
-    description: '',
-    // type: '',
-    // subType: '',
-    make: '',
-    model: '',
-    value: '',
-    status: '',
-    geoLocation:'',
-    // incharge: '',
-    // userDept: '',
-    phoneNumber: '',
-    purchaseDate: '',
-    isSerialized: false,
-    isUnderWarranty: false,
-    isUnderAmc: false,
-    isApprovedByHOD:false,
-    isApprovedByPrinicipal:false,
-    serialNo: '',
-    warranty: '',
-    AMCendDate: '',
-    deptInfoDto:{},
-    locInfoDto:{},
-    vendorInfoDto:{},
-    assetInchargeDto:{},
-
-
+  const [formValues, setFormValues] = useState({ 
+      assetName:'' ,
+      make: '',
+      model: '',
+      isSerialized: false,
+      serialNo: '',
+      description: '',
+      geoLocation: '', 
+      purchaseDate: '', 
+      warranty: '',
+      isWarrantyExpired: false,
+      isUnderWarranty: false,
+      status: '',
+      isApprovedByHOD: false,
+      isApprovedByPrinicipal: false,
+      deptInfoDto: {
+          id: ''
+          
+      }, 
+      locInfoDto: {
+          id: ''
+          
+      },
+      vendorInfoDto:{
+      id:''
+      },
+      employeeDto: {
+          id: '' 
+      }
   });
   
 
@@ -65,32 +66,45 @@ const AssetCreate = () => {
     const file = e.target.files[0];
     setSelectedImage(URL.createObjectURL(file));
   };
-const asset= new AssetsDto();
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const assetData = {
       ...formValues,
     
     };
-    asset.assetName=assetData.assetName;
-    asset.make=assetData.make;
-    asset.model=assetData.model;
-    asset.isSerialized=assetData.isSerialized;
-    asset.serialNo=assetData.serialNo;
-    asset.description=assetData.description;
-    asset.purchaseDate=assetData.purchaseDate;
-    asset.warranty=assetData.warranty;
-    asset.isWarrantyExpired=assetData.isWarrantyExpired;
-    asset.status=assetData.status;
-    asset.isApprovedByHOD=assetData.isApprovedByHOD;
-    asset.isApprovedByPrinicipal=assetData.isApprovedByPrinicipal;
-    asset.deptInfoDto=assetData.deptInfoDto;
-    asset.locInfoDto=assetData.locInfoDto;
-    asset.assetInchargeDto=assetData.assetInchargeDto;
-
-
-
-    createAsset(assetData, navigate);
+const asset={
+    assetName:assetData.assetName ,
+      make: assetData.make,
+      model: assetData.model,
+      isSerialized: assetData.isSerialized,
+      serialNo:assetData.serialNo,
+      description: assetData.description,
+      geoLocation: assetData.geoLocation, 
+      purchaseDate: assetData.purchaseDate, 
+      warranty: assetData.warranty,
+      isWarrantyExpired: assetData.isWarrantyExpired,
+      isUnderWarranty: assetData.isUnderWarranty,
+      status: assetData.status,
+      isApprovedByHOD: assetData.isApprovedByHOD,
+      isApprovedByPrinicipal: assetData.isApprovedByPrinicipal,
+      deptInfoDto: {
+          id: ''
+          
+      }, 
+      locInfoDto: {
+          id: ''
+          
+      },
+      vendorInfoDto:{
+      id:''
+      },
+      employeeDto: {
+          id: '' 
+      }
+    }
+    createAsset(asset, navigate);
   };
 
 
