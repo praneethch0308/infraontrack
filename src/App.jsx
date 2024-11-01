@@ -17,7 +17,6 @@ import ProtectedRoute from './components/protectedroute/ProtectedRoute';
 import { DeptProvider } from './context/departments/DeptContext';
 import ChangePassword from './pages/auth/ChangePassword';
 import { VendorProvider } from './context/vendors/VendorContext';
-import BulkApproval from './pages/bulkapproval/BulkApproval';
 import Assets from './pages/assets/Assets';
 import LocationCreate from './pages/locations/LocationCreate';
 import { LocProvider } from './context/locations/LocationContext';
@@ -30,6 +29,12 @@ import { ListProvider } from './context/lists/ListContext';
 import AddListitem from './pages/lists/AddListitem';
 import AddSubList from './pages/lists/AddSubList';
 
+import BulkApprovalHod from './pages/bulkapproval/BulkApprovalHod';
+import BulkApprovalPrincipal from './pages/bulkapproval/BulkApprovalPrincipal';
+import AssetApproveHod from './pages/bulkapproval/AssetApproveHod';
+import AssetApprovePrincipal from './pages/bulkapproval/AssetApprovePrincipal';
+import { BulkApprovalProvider } from './context/bulkapproval/BulkapprovalContext';
+
 function App() {
   return (
     <BrowserRouter>
@@ -41,6 +46,7 @@ function App() {
              <LocProvider>
               <AssetProvider>
                 <ListProvider>
+                  <BulkApprovalProvider>
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route
@@ -67,9 +73,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route
-                path="/dashboard"
-                element={
+              <Route path="/dashboard" element={
                   <ProtectedRoute>
                     <Dashboard />
                   </ProtectedRoute>
@@ -165,10 +169,18 @@ function App() {
                 }
               />
                <Route
-                path="/bulk-approval"
+                path="/bulkapproval-hod"
                 element={
                   <ProtectedRoute>
-                    <BulkApproval />
+                    <BulkApprovalHod />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/bulkapproval-principal"
+                element={
+                  <ProtectedRoute>
+                    <BulkApprovalPrincipal />
                   </ProtectedRoute>
                 }
               />
@@ -181,6 +193,22 @@ function App() {
                 }
               />
               <Route
+                path="/assetapprove-hod"
+                element={
+                  <ProtectedRoute>
+                    <AssetApproveHod />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/assetapprove-principal"
+                element={
+                  <ProtectedRoute>
+                    <AssetApprovePrincipal />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/asset-create"
                 element={
                   <ProtectedRoute>
@@ -189,6 +217,7 @@ function App() {
                 }
               />
             </Routes>
+            </BulkApprovalProvider>
             </ListProvider>
             </AssetProvider>
             </LocProvider> 

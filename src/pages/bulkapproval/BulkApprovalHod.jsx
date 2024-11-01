@@ -9,13 +9,11 @@ import Sidebar from '../../components/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EmployeeContext from '../../context/employees/EmployeeContext';
 import ExportToExcelButton from '../../components/excelbutton/ExcelButton';
-import { Dangerous, ReportProblem } from '@mui/icons-material';
-import { CgDanger } from 'react-icons/cg';
-import { IoAlert } from 'react-icons/io5';
-import { MdReportGmailerrorred, MdReportProblem } from 'react-icons/md';
-import { FaBeer } from 'react-icons/fa';
+import { ReportProblem } from '@mui/icons-material';
+import axios from 'axios';
+import { useBulkApprovalContext } from '../../context/bulkapproval/BulkapprovalContext';
 
-const BulkApproval = () => {
+const BulkApprovalHod = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(3);
@@ -23,10 +21,13 @@ const BulkApproval = () => {
     const [showCheckboxes, setShowCheckboxes] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const context = useContext(EmployeeContext);
-    const { employees = [], getEmployees } = context;
+    const baseURl = process.env.REACT_APP_API_KEY;
+    const { Hodassets=[],getAssetsforHod } = useBulkApprovalContext();
+
+    
 
     useEffect(() => {
-        getEmployees();
+        getAssetsforHod();
     }, []);
 
     const handleChangePage = (event, newPage) => {
@@ -40,7 +41,7 @@ const BulkApproval = () => {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = employees.map((employee) => employee.id);
+            const newSelecteds = Hodassets.map((asset) => asset.id);
             setSelected(newSelecteds);
             setShowCheckboxes(true);  
         } else {
@@ -70,17 +71,15 @@ const BulkApproval = () => {
 
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
-    const paginatedemployees = Array.isArray(employees) 
-        ? employees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
+    const paginatedAssets = Array.isArray(Hodassets) 
+        ? Hodassets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
         : [];
-
 
     const handleApproveAllClick = () => {
         setOpenDialog(true);
     };
 
     const handleConfirmApprove = () => {
-        
         alert('All selected rows approved!');
         setOpenDialog(false);
         setSelected([]);  
@@ -98,37 +97,36 @@ const BulkApproval = () => {
             </Grid>
             <Grid item xs style={{ paddingLeft: '20px', marginRight: '28px' }}>
                 <Toolbar />
-                <Box display="flex" justifyContent="flex-end" mb={5} mt={2} className="w-full" >
-                    <Box display="flex" justifyContent="space-between" mr={5} >
+                <Box display="flex" justifyContent="flex-end" mb={5} mt={2} className="w-full">
+                    <Box display="flex" justifyContent="space-between" mr={5}>
                         <Box mr={3}>
                             <ExportToExcelButton tableId="EmployeeTable"/>
                         </Box>
                     </Box>
                 </Box>
                 <Box mb={2}>
-                {selected.length > 0 && (
-                    <Button
-                        variant="contained"
-                        color="success"
-                        onClick={handleApproveAllClick}
-                    className='justify-center'>
-                        Approve All Selected
-                    </Button>
-                )}
+                    {selected.length > 0 && (
+                        <Button
+                            variant="contained"
+                            color="success"
+                            onClick={handleApproveAllClick}
+                            className='justify-center'>
+                            Approve All Selected </Button>
+                    )}
                 </Box>
                 <TableContainer component={Paper}>
                     <Table id="EmployeeTable">
                         <TableHead>
                             <TableRow sx={{ backgroundColor: '#002a5c', '& .MuiTableCell-root': { color: 'white', fontWeight: 'bold' } }}>
                                 <TableCell title='Select all' placement="bottom" arrow >
-                                  <Tooltip>
-                                    <Checkbox 
-                                        color="white"
-                                        className='bg-white'
-                                        indeterminate={selected.length > 0 && selected.length < employees.length}
-                                        checked={employees.length > 0 && selected.length === employees.length}
-                                        onChange={handleSelectAllClick}
-                                    />
+                                    <Tooltip>
+                                        <Checkbox 
+                                            color="white"
+                                            className='bg-white'
+                                            indeterminate={selected.length > 0 && selected.length < Hodassets.length}
+                                            checked={Hodassets.length > 0 && selected.length === Hodassets.length}
+                                            onChange={handleSelectAllClick}
+                                        />
                                     </Tooltip>
                                 </TableCell>
                                 <TableCell>Asset Name</TableCell>
@@ -141,39 +139,49 @@ const BulkApproval = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {paginatedemployees.map((employee) => {
-                                const isItemSelected = isSelected(employee.id);
+                            {paginatedAssets.length === 0 ? (
+                                <TableRow>
+                                    <TableCell colSpan={8} style={{ textAlign: 'center', fontWeight: 'bold' }}>
+                                        No pending approvals
+                                    </TableCell>
+                                </TableRow>
+                            ) : (
+                                paginatedAssets.map((asset) => {
+                                    const isItemSelected = isSelected(asset.id);
 
-                                return (
-                                    <TableRow key={employee.id} selected={isItemSelected}>
-                                        <TableCell>
-                                            {showCheckboxes && (
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    onClick={() => handleCheckboxClick(employee.id)}
-                                                />
-                                            )}
-                                        </TableCell>
-                                        <TableCell>{employee.assetName || "N/A"}</TableCell>
-                                        <TableCell>{employee.type || "N/A"}</TableCell>
-                                        <TableCell>{employee.subType || "N/A"}</TableCell>
-                                        <TableCell>{employee.make || "N/A"}</TableCell>
-                                        <TableCell>{employee.deptInfoDto?.deptName}</TableCell>
-                                        <TableCell>{employee.location || "N/A"}</TableCell>
-                                        <TableCell className={`${isItemSelected ?' hidden': 'visible'}`}>
-                                            <Button variant="contained" color="success">Approve</Button>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
+                                    return (
+                                        <TableRow key={asset.id} selected={isItemSelected}>
+                                            <TableCell>
+                                                {showCheckboxes && (
+                                                    <Checkbox
+                                                        color="primary"
+                                                        checked={isItemSelected}
+                                                        onClick={() => handleCheckboxClick(asset.id)} 
+                                                    />
+                                                )}
+                                            </TableCell>
+                                            <TableCell>{asset.assetName || "N/A"}</TableCell>
+                                            <TableCell>{asset.type || "N/A"}</TableCell>
+                                            <TableCell>{asset.level1 || "N/A"}</TableCell>
+                                            <TableCell>{asset.make || "N/A"}</TableCell>
+                                            <TableCell>{asset.deptInfoDto?.deptName}</TableCell>
+                                            <TableCell>{asset.location || "N/A"}</TableCell>
+                                            <TableCell className={`${isItemSelected ? 'hidden' : 'visible'}`}>
+                                                <Button variant="contained" color="success" onClick={() => {
+                                                    navigate("/assetapprove-hod", { state: { asset } });
+                                                }}>Approve</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })
+                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10, 25, 50]}
                     component="div"
-                    count={Array.isArray(employees) ? employees.length : 0}
+                    count={Array.isArray(Hodassets) ? Hodassets.length : 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -186,10 +194,9 @@ const BulkApproval = () => {
                 onClose={handleDialogClose}>
                 <DialogTitle sx={{fontWeight:'bold'}}>Confirm Approval</DialogTitle>
                 <DialogContent >
-                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
-                    <ReportProblem color="error" sx={{fontSize:50}} />
-                </Box>
-                  <i className="bi bi-exclamation-triangle"></i>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
+                        <ReportProblem color="error" sx={{fontSize:50}} />
+                    </Box>
                     <DialogContentText sx={{ color:'black'}}>
                         Are you sure you want to approve all selected Assets?
                     </DialogContentText>
@@ -197,11 +204,10 @@ const BulkApproval = () => {
                 <DialogActions>
                     <Button onClick={handleConfirmApprove} sx={{backgroundColor:'green',color:'white', borderRadius:'18px'}}>Confirm</Button>
                     <Button onClick={handleDialogClose} sx={{backgroundColor:'red',color:'white', borderRadius:'18px'}} >Cancel</Button>
-                    
                 </DialogActions>
             </Dialog>
         </Grid>
     );
 };
 
-export default BulkApproval;
+export default BulkApprovalHod;

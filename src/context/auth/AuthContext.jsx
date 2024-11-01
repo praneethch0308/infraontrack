@@ -58,6 +58,10 @@ export const AuthProvider = ({ children }) => {
         }
     };
     
+    const getRole= async()=>{
+        return role;
+        console.log("Return role",role)
+    }
     
     const logout = () => {
         localStorage.removeItem('token');

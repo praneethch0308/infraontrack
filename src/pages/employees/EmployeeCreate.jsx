@@ -29,7 +29,7 @@ const employeeSchema = z.object({
     designation: z.string().min(1, "Designation is required"),
     email: z.string().email("Invalid email format"),
     phoneNumber: z.string().min(10).max(10).regex(/^\d{10}$/, "Phone number must be 10 digits"),
-    department: z.number().min(1, "Department is required"),
+    department: z.number().min(1, "Department is required").optional(),
 });
 
 const EmployeeCreate = () => {
@@ -129,6 +129,7 @@ const EmployeeCreate = () => {
                                 <FormControl fullWidth sx={{ mb: 3, backgroundColor: 'white' }}>
                                     <InputLabel>Designation</InputLabel>
                                     <Select {...field} error={!!errors.designation}>
+                                        <MenuItem value="" selected>SELECT ROLE</MenuItem>
                                         <MenuItem value="ROLE_SYS_ADMIN">SYS_ADMIN</MenuItem>
                                         <MenuItem value="ROLE_PRINCIPAL">PRINCIPAL</MenuItem>
                                         <MenuItem value="ROLE_HOD">HOD</MenuItem>

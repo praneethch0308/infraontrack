@@ -72,7 +72,7 @@ export const AssetProvider = ({ children }) => {
 
     const getAssets = async () => {
         try {
-          const response = await axios.get(`${baseURl}/api/assets/create`, {
+          const response = await axios.get(`${baseURl}/api/assets/getAssets`, {
           });
           setAssets(response.data.data);
           console.log(response.data)

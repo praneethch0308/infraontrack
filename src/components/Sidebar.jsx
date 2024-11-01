@@ -3,37 +3,71 @@ import { useNavigate } from 'react-router-dom';
 import {
     Drawer, List, ListItem, ListItemIcon, ListItemText, IconButton, Divider,
     AppBar, Toolbar, Avatar, Box, Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle, Button
+    DialogContentText, DialogTitle, Button,
+    Badge
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import GroupIcon from '@mui/icons-material/Group';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useSidebar } from '../context/SidebarContext';
-import { AccountTree, CheckBox, Devices, Key, ListAlt, LogoutSharp } from '@mui/icons-material';
-import { GiTakeMyMoney } from 'react-icons/gi';
+import { LogoutSharp } from '@mui/icons-material';
 import LoadingSpinner from './loadingspinner/LoadingSpinner';
 import { useAuth } from '../context/auth/AuthContext';
-
-const menuItems = [
-    { path: '/dashboard', icon: <DashboardIcon />, label: 'Dashboard' },
-    { path: '/assets', icon: <Devices />, label: 'Assets' },
-    { path: '/vendors', icon: <GiTakeMyMoney className='h-7 w-7' />, label: 'Vendors' },
-    { path: '/employees', icon: <GroupIcon />, label: 'Employees' },
-    { path: '/locations', icon: <LocationOnIcon />, label: 'Locations' },
-    { path: '/departments', icon: <AccountTree />, label: 'Departments' },
-    { path: '/bulk-approval', icon: <CheckBox />, label: 'Bulk Approval' },
-    { path: '/change-password', icon: <Key />, label: 'Change Password' },
-    { path: '/lists', icon: <ListAlt />, label: 'Lists' }
-];
+import { useBulkApprovalContext } from '../context/bulkapproval/BulkapprovalContext';
 
 const Sidebar = () => {
     const { isOpened, toggleSidebar } = useSidebar();
     const [selectedItem, setSelectedItem] = useState('');
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const navigate = useNavigate();
-    const { logout } = useAuth(); 
+    const { logout,role } = useAuth(); 
+   
+    const { getAssetsforPrincipal,getAssetsforHod, HodbulkApprovalCount,PrincipalbulkApprovalCount } = useBulkApprovalContext()
+
+   useEffect(()=>{
+    getAssetsforHod();
+    getAssetsforPrincipal()
+    
+   },[])
+
+   
+    let userRole = localStorage.getItem('role');
+    userRole = userRole.replace(/^"|"$/g, '');
+
+
+    const menuItems = {
+        ROLE_HOD: [
+            { path: '/dashboard', icon: '🏠', label: 'Dashboard' },
+            { path: '/assets', icon: '📦', label: 'Assets' },
+            { path: '/vendors', icon: '💰', label: 'Vendors' },
+            { path: '/employees', icon: '👥', label: 'Employees' },
+            { path: '/locations', icon: '📍', label: 'Locations' },
+            { path: '/departments', icon: '🏢', label: 'Departments' },
+            {
+                path: '/bulkapproval-hod',
+                icon: '✅',
+                label: 'Bulk Approval',
+                badgeCount: HodbulkApprovalCount
+            },
+            { path: '/change-password', icon: '🔑', label: 'Change Password' },
+            { path: '/lists', icon: '📝', label: 'Lists' }
+        ],
+        ROLE_PRINCIPAL: [
+            { path: '/dashboard', icon: '🏠', label: 'Dashboard' },
+            { path: '/assets', icon: '📦', label: 'Assets' },
+            { path: '/vendors', icon: '💰', label: 'Vendors' },
+            { path: '/employees', icon: '👥', label: 'Employees' },
+            { path: '/locations', icon: '📍', label: 'Locations' },
+            { path: '/departments', icon: '🏢', label: 'Departments' },
+            {
+                path: '/bulkapproval-principal',
+                icon: '✅',
+                label: 'Bulk Approval',
+                badgeCount: PrincipalbulkApprovalCount 
+            },
+            { path: '/change-password', icon: '🔑', label: 'Change Password' },
+            { path: '/lists', icon: '📝', label: 'Lists' }
+        ],
+    };
 
     useEffect(() => {
         const savedState = localStorage.getItem('sidebarOpened');
@@ -44,14 +78,14 @@ const Sidebar = () => {
         setSelectedItem(currentPath);
     }, [toggleSidebar]);
 
+    
     const handleItemClick = (path) => {
-        setLoading(true); 
+        setLoading(true);
         setSelectedItem(path);
-        
         setTimeout(() => {
             navigate(path);
-            setLoading(false); 
-        }, 500); 
+            setLoading(false);
+        }, 500);
     };
 
     const handleToggle = () => {
@@ -60,11 +94,11 @@ const Sidebar = () => {
     };
 
     const handleConfirmApprove = () => {
-        setLoading(true); 
+        setLoading(true);
         setTimeout(() => {
             logout();
-            setLoading(false); 
-        }, 500);  
+            setLoading(false);
+        }, 500);
     };
 
     const handleDialogClose = () => {
@@ -72,7 +106,7 @@ const Sidebar = () => {
     };
 
     const handleLogoutClick = () => {
-        setOpenDialog(true); 
+        setOpenDialog(true);
     };
 
     const userName = localStorage.getItem('userName');
@@ -102,7 +136,7 @@ const Sidebar = () => {
                 <List>
                     <div className='ml-8 mr-8 mt-3 text-white'>{userName}</div>
                     
-                    {menuItems.map((item) => (
+                    {menuItems[userRole].map((item) => (
                         <ListItem
                             button
                             key={item.path}
@@ -130,12 +164,16 @@ const Sidebar = () => {
                             >
                                 {item.icon}
                             </ListItemIcon>
+                        
                             {isOpened && (
-                                <ListItemText
-                                    primary={item.label}
-                                    sx={{ color: 'white' }}
-                                    primaryTypographyProps={{ fontWeight: 'bold' }}
-                                />
+                                <ListItemText primary={item.label} sx={{ color: 'white' }}
+                                primaryTypographyProps={{ fontWeight: 'bold' }} />
+                            )}
+                            {item.label === 'Bulk Approval' && item.path==='/bulkapproval-principal' && PrincipalbulkApprovalCount > 0 && (
+                                <Badge badgeContent={PrincipalbulkApprovalCount}  color="primary" />
+                            )}
+                            {item.label === 'Bulk Approval' && item.path==='/bulkapproval-hod' && HodbulkApprovalCount > 0 && (
+                                <Badge badgeContent={HodbulkApprovalCount}  color="primary" />
                             )}
                         </ListItem>
                     ))}

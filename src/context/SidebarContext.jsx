@@ -1,3 +1,4 @@
+// SidebarContext.js
 import React, { createContext, useState, useContext } from 'react';
 
 const SidebarContext = createContext();
@@ -19,5 +20,5 @@ export const SidebarProvider = ({ children }) => {
         <SidebarContext.Provider value={{ isOpened, toggleSidebar }}>
             {children}
         </SidebarContext.Provider>
-        );
+    );
 };

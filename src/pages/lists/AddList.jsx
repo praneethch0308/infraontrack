@@ -55,12 +55,12 @@ const {createSysList, snackbarOpen, snackbarMessage, snackbarSeverity, handleClo
                 <TextField
                     fullWidth
                     required
-                    label="Enter Location Name"
+                    label="Enter Asset Type"
                     name="name"
                     value={formValues.name}
                     onChange={handleChange}
                     sx={{ mb: 2, backgroundColor: 'white', border: 'none' }}
-                    className='w-full rounded-md '
+                    className='w-full rounded-md'
                 />
             </Grid2>
             <div className='flex justify-center'>
