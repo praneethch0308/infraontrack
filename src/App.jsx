@@ -34,6 +34,8 @@ import BulkApprovalPrincipal from './pages/bulkapproval/BulkApprovalPrincipal';
 import AssetApproveHod from './pages/bulkapproval/AssetApproveHod';
 import AssetApprovePrincipal from './pages/bulkapproval/AssetApprovePrincipal';
 import { BulkApprovalProvider } from './context/bulkapproval/BulkapprovalContext';
+import AssetUpdate from './pages/assets/AssetUpdate';
+import AssetView from './pages/assets/AssetView';
 
 function App() {
   return (
@@ -216,6 +218,24 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route
+                path="/asset-update"
+                element={
+                  <ProtectedRoute>
+                    <AssetUpdate />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/assetview"
+                element={
+                  <ProtectedRoute>
+                    <AssetView />
+                  </ProtectedRoute>
+                }
+              />
+
             </Routes>
             </BulkApprovalProvider>
             </ListProvider>

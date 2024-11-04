@@ -1,45 +1,30 @@
-import { Box, Button, Grid, Toolbar, Typography, Dialog, DialogActions, DialogContent, DialogContentText, Snackbar } from '@mui/material';
+import { Box, Button, Grid, Toolbar, Typography, Modal, Snackbar } from '@mui/material';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AssetDetails from '../../components/Assetdetails/AssetDetails';
 import Sidebar from '../../components/Sidebar';
 import axios from 'axios';
 
-const  AssetApprovePrincipal = () => {
+const AssetView = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { asset } = location.state || {};
 
-    const [openDialog, setOpenDialog] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    const [openModal, setOpenModal] = useState(false);
+    const [assetHistory, setAssetHistory] = useState([]); 
 
-    const handleApprove = async () => {
+
+    const fetchAssetHistory = async () => {
         try {
-           
-            const role = localStorage.getItem('role');
-            console.log("Role retrieved from localStorage:", role); // Debugging line
-            console.log(asset.id);
-            const response = await axios.post(`http://localhost:9090/api/assets/approve/principal/${asset.id}`);
-            console.log(response.data);
-            console.log("API response:", response.data); 
-            setSnackbarMessage('Asset approved successfully');
-            setSnackbarSeverity('success');
-            setSnackbarOpen(true);
-            navigate('/bulkapproval-principal');
-        
+            const response = await axios.get(`http://localhost:9090/history/${asset.id}`);
+            setAssetHistory(response.data.data); 
+            setOpenModal(true);
         } catch (error) {
-            console.error("Error approving asset:", error);
-            setSnackbarMessage('Failed to approve asset');
+            console.error("Error fetching asset history:", error);
+            setSnackbarMessage('Failed to fetch asset history');
             setSnackbarSeverity('error');
             setSnackbarOpen(true);
         }
-    };
-
-    const handleDialogConfirm = () => {
-        handleApprove();
-        setOpenDialog(false);
     };
 
     return (
@@ -50,6 +35,14 @@ const  AssetApprovePrincipal = () => {
             <Grid item xs style={{ paddingLeft: '20px', marginRight: '36px' }}>
                 <Toolbar />
                 <Typography className='font-bold text-xl text-center'>ASSET DETAILS</Typography>
+                <div className='flex justify-between p-2'>
+                    <Button variant="contained" color="primary" onClick={fetchAssetHistory}>
+                        View History
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={() => navigate('/assets')}>
+                        Back
+                    </Button>
+                </div>
                 <div className='flex justify-around bg-blue-50 rounded-lg p-4'>
                     <div className='w-1/2'>
                         <AssetDetails title={"Asset Name"} value={asset.assetName} />
@@ -70,43 +63,43 @@ const  AssetApprovePrincipal = () => {
                         <AssetDetails title={"Purchase Date"} value={asset.purchaseDate} />
                         <AssetDetails title={"Is Under Warranty"} value={asset.isUnderWarranty ? "Yes" : "No"} />
                         <AssetDetails title={"Warranty End Date"} value={asset.warrantyEndDate || "N/A"} />
-                        <AssetDetails title ={"Is Under AMC"} value={asset.underAMC ? "Yes" : "No"} />
+                        <AssetDetails title={"Is Under AMC"} value={asset.underAMC ? "Yes" : "No"} />
                         <AssetDetails title={"AMC End Date"} value={asset.amcEndDate || "N/A"} />
                         <AssetDetails title={"Status"} value={asset.status} />
                         <AssetDetails title={"Approved by HOD "} value={asset.isApprovedByHOD ? "Yes" : "No"} />
                     </div>
                 </div>
-                <div className='flex justify-center p-2'>
-                    <Button variant="contained" color="success" onClick={() => setOpenDialog(true)}>APPROVE</Button>
-                </div>
-                <Dialog
-                    open={openDialog}
-                    onClose={() => setOpenDialog(false)}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to approve this asset?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => setOpenDialog(false)}>No</Button>
-                        <Button onClick={handleDialogConfirm} autoFocus>
-                            Yes
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-                <Snackbar
-                    open={snackbarOpen}
-                    autoHideDuration={6000}
-                    onClose={() => setSnackbarOpen(false)}
-                    message={snackbarMessage}
-                    severity={snackbarSeverity}
-                />
+
+                <Modal open={openModal} onClose={() => setOpenModal(false)}>
+                    <Box sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        bgcolor: 'background.paper',
+                        border: '2px solid #000',
+                        boxShadow: 24,
+                        p: 4,
+                    }}>
+                        {Array.isArray(assetHistory) && assetHistory.length > 0 ? (
+                            assetHistory.map((historyItem, index) => (
+                                <Typography key={index}>
+                                    <b>Act Code:</b> {historyItem.actCode}<br />
+                                    <b>Description:</b> {historyItem.description}<br />
+                                    <b>Act Time:</b> {historyItem.actTime}<br />
+                                    <br />
+                                </Typography>
+                            ))
+                        ) : (
+                            <Typography>No history available</Typography>
+                        )}
+                    </Box>
+                </Modal>
+
             </Grid>
         </Grid>
     );
 };
 
-export default  AssetApprovePrincipal;
+export default AssetView;

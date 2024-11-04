@@ -101,6 +101,28 @@ const createAsset = async (asset, navigate) => {
     }
 };
 
+const UpdateAsset = async (e,asset,id,navigate) => {
+    e.preventDefault();
+    console.log(asset);
+    console.log(id);
+    try {
+        const response = await axios.post(`${baseURl}/api/assets/update/${id}`, asset);
+        if (response.status === 200) {
+            setSnackbarMessage('Asset updated successfully!');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+            setTimeout(() => {
+                navigate("/assets");
+            }, 1000);
+        }
+    } catch (error) {
+        console.error('update error:', error);
+        setSnackbarMessage('Failed to update asset');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+    }
+};
+
     const handleCloseSnackbar = () => {
         setSnackbarOpen(false);
     };
@@ -112,6 +134,7 @@ const createAsset = async (asset, navigate) => {
         handleCloseSnackbar,
         createAsset,
         getAssets,
+        UpdateAsset,
         assets
     };
 

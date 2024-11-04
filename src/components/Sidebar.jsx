@@ -67,6 +67,16 @@ const Sidebar = () => {
             { path: '/change-password', icon: '🔑', label: 'Change Password' },
             { path: '/lists', icon: '📝', label: 'Lists' }
         ],
+        ROLE_INCHARGE: [
+            { path: '/dashboard', icon: '🏠', label: 'Dashboard' },
+            { path: '/assets', icon: '📦', label: 'Assets' },
+            { path: '/vendors', icon: '💰', label: 'Vendors' },
+            { path: '/employees', icon: '👥', label: 'Employees' },
+            { path: '/locations', icon: '📍', label: 'Locations' },
+            { path: '/departments', icon: '🏢', label: 'Departments' },
+            { path: '/change-password', icon: '🔑', label: 'Change Password' },
+            { path: '/lists', icon: '📝', label: 'Lists' }
+        ],
     };
 
     useEffect(() => {
@@ -134,7 +144,7 @@ const Sidebar = () => {
             >
                 <Toolbar />
                 <List>
-                    <div className='ml-8 mr-8 mt-3 text-white'>{userName}</div>
+                    <div className='ml-8 mr-8 mt-1 text-white'>{userName}</div>
                     
                     {menuItems[userRole].map((item) => (
                         <ListItem
@@ -167,7 +177,7 @@ const Sidebar = () => {
                         
                             {isOpened && (
                                 <ListItemText primary={item.label} sx={{ color: 'white' }}
-                                primaryTypographyProps={{ fontWeight: 'bold' }} />
+                                primaryTypographyProps={{ fontWeight: 'semibold' }} />
                             )}
                             {item.label === 'Bulk Approval' && item.path==='/bulkapproval-principal' && PrincipalbulkApprovalCount > 0 && (
                                 <Badge badgeContent={PrincipalbulkApprovalCount}  color="primary" />

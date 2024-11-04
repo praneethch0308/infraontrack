@@ -57,7 +57,6 @@ export const LocProvider = ({ children }) => {
 const createLoctn = async (location, navigate) => {
     try {
         const response = await axios.post(`${baseURl}/Locations/save`, location);
-
         if (response.status === 200) {
             setSnackbarMessage('Location created successfully!');
             setSnackbarSeverity('success');
