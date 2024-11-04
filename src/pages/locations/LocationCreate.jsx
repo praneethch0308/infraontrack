@@ -134,6 +134,7 @@ const LocationCreate = () => {
                         />
                     </div>
 
+
                     <div className="flex w-2/3 justify-between items-center">
                         <FormLabel className="font-bold text-black w-1/3">
                             Incharge Name <span className="text-red-600">*</span>

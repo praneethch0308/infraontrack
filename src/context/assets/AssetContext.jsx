@@ -101,8 +101,7 @@ const createAsset = async (asset, navigate) => {
     }
 };
 
-const UpdateAsset = async (e,asset,id,navigate) => {
-    e.preventDefault();
+const UpdateAsset = async (asset,id,navigate) => {
     console.log(asset);
     console.log(id);
     try {

@@ -14,7 +14,7 @@ const Assets = () => {
     const [qr, setQr] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [filters, setFilters] = useState({
-        deptname: null
+        assetName: null
     });
     const [assetName, setAssetName] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
@@ -98,7 +98,7 @@ const Assets = () => {
         navigate(`/asset-update`, { state: { asset } });
       };
     const filteredAssets = Array.isArray(assets) ? assets.filter((asset) => {
-        return (!filters.deptname || asset.deptname === filters.deptname);
+        return (!filters.assetName || asset.assetName === filters.assetName);
     }) : [];
     const paginatedAssets = filteredAssets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
@@ -114,7 +114,7 @@ const Assets = () => {
                         variant="contained"
                         className='bg-[#002a5c] rounded -3xl'
                         onClick={() => navigate('/asset-create')}
-                    >
+                    >     
                         <span className='font-semibold'>Create Asset</span>
                         <PersonAddAlt sx={{ height: '20px', width: '20px', ml: 1 }} />
                     </Button>
@@ -126,13 +126,13 @@ const Assets = () => {
                         <Autocomplete
                             options={assets.map(department => department.assetName || '')}
                             value={filters.assetName || null}
-                            onChange={(event, newValue) => handleAutoCompleteChange(event, newValue, 'deptName')}
+                            onChange={(event, newValue) => handleAutoCompleteChange(event, newValue, 'assetName')}
                             renderInput={(params) => <TextField {...params} label="Select Asset Name" />}
                             sx={{ width: 200, marginLeft: 2 }}
                         />
                     </Box>
                 </Box>
-                
+
                 <TableContainer component={Paper} sx={{ maxWidth: '100%', overflowX: 'auto' }}>
                     <Table>
                         <TableHead>
@@ -166,8 +166,7 @@ const Assets = () => {
                                 <Button
                                     className='bg-green-700 text-white text-sm'
                                     onClick={() => handleViewQRCode(asset.id, asset.assetName)}
-                                >
-                                    View QR code
+                                > View
                             </Button>
                             </TableCell>
             <TableCell className='text-center'>{asset.isApprovedByPrinicipal ? '✅' : '❌'}</TableCell>
@@ -182,9 +181,9 @@ const Assets = () => {
                     }}><Edit /></Button>
                 </div>
             </TableCell>       
-        </TableRow>
-    ))}
-</TableBody>
+            </TableRow>
+                     ))}
+            </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination

@@ -375,8 +375,8 @@ const AssetCreate = () => {
             <TextField
               fullWidth
               label="Enter Phone Number"
-              name="phoneNumber"
-              value={formValues.phoneNumber}
+              name="phoneNum"
+              value={formValues.phoneNum}
               onChange={handleChange}
               sx={{ mb: 2, backgroundColor: 'white' }}
               className="w-full rounded-md"

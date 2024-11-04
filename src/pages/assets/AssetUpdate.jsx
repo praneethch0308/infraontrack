@@ -136,8 +136,9 @@ const AssetUpdate = () => {
         </Grid>
         <form onSubmit={handleSubmit} className="w-full ml-[240px] bg-neutral-200 rounded-lg p-5 mr-5">
           <Typography component="h1" variant="h5" sx={{ mb: 3, fontWeight: 'bold' }}>
-            Create Asset
+            Update Asset
           </Typography>
+
 
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
