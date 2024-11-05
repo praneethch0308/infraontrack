@@ -77,6 +77,7 @@ const Sidebar = () => {
             { path: '/change-password', icon: '🔑', label: 'Change Password' },
             { path: '/lists', icon: '📝', label: 'Lists' }
         ],
+        
     };
 
     useEffect(() => {

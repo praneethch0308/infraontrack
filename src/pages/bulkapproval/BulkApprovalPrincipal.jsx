@@ -76,14 +76,22 @@ const BulkApprovalPrincipal = () => {
     const handleApproveAllClick = () => {
         setOpenDialog(true);
     };
-
-    const handleConfirmApprove = () => {
-        alert('All selected rows approved!');
-        setOpenDialog(false);
-        setSelected([]);  
-        setShowCheckboxes(false);  
+    const baseURl = process.env.REACT_APP_API_KEY;
+    const handleConfirmApprove = async () => {
+        try {
+            const response = await axios.post(`${baseURl}/api/assets/approveByPrincipalBulk`);
+            console.log(response);
+            alert('All selected rows approved!');
+            await getAssetsforPrincipal();
+            setSelected([]);  
+            setShowCheckboxes(false);  
+        } catch (error) {
+            console.error("Error approving assets:", error);
+            alert('There was an error approving the selected assets. Please try again.');
+        } finally {
+            setOpenDialog(false);
+        }
     };
-
     const handleDialogClose = () => {
         setOpenDialog(false);
     };

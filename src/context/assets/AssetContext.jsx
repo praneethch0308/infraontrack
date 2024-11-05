@@ -83,12 +83,10 @@ export const AssetProvider = ({ children }) => {
 const createAsset = async (asset, navigate) => {
     try {
         const response = await axios.post(`${baseURl}/api/assets/create`, asset);
-
         if (response.status === 200) {
             setSnackbarMessage('Asset created successfully!');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
-
             setTimeout(() => {
                 navigate("/assets");
             }, 1000);
@@ -103,7 +101,7 @@ const createAsset = async (asset, navigate) => {
 
 const UpdateAsset = async (asset,id,navigate) => {
     console.log(asset);
-    console.log(id);
+    console.log(id);``
     try {
         const response = await axios.post(`${baseURl}/api/assets/update/${id}`, asset);
         if (response.status === 200) {

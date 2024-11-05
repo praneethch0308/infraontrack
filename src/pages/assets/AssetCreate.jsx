@@ -64,7 +64,7 @@ const AssetCreate = () => {
     const file = e.target.files[0];
     setSelectedImage(URL.createObjectURL(file));
   };
-
+const username= localStorage.getItem('userName')
   const handleSubmit = (e) => {
     e.preventDefault();
     const asset = {
@@ -73,6 +73,7 @@ const AssetCreate = () => {
       locInfoDto: { id: formValues.locInfoDto },
       vendorInfoDto: { id: formValues.vendorInfoDto },
       employeeDto: { id: formValues.employeeDto },
+      username: username
     };
     createAsset(asset, navigate);
   };
@@ -347,11 +348,11 @@ const AssetCreate = () => {
 
           <div className="flex w-2/3 justify-between items-center">
             <FormLabel className="font-bold text-black w-1/3">
-              Location <span className="text-red-600">*</span>
+              Vendor <span className ="text-red-600">*</span>
             </FormLabel>
             <Box className="w-full bg-white mb-3 rounded-md">
               <FormControl fullWidth>
-                <InputLabel>Location</InputLabel>
+                <InputLabel>Select Vendor</InputLabel>
                 <Select
                   name="vendorInfoDto"
                   value={formValues.vendorInfoDto}
@@ -390,7 +391,7 @@ const AssetCreate = () => {
             <TextField
               fullWidth
               type="date"
-              name="purchaseDate" // Add this line
+              name="purchaseDate" 
               value={formValues.purchaseDate}
               onChange={handleChange}
               sx={{ mb: 2, backgroundColor: 'white' }}
@@ -531,7 +532,6 @@ const AssetCreate = () => {
           </Button>
         </form>
 
-        {/* Snackbar for Success/Error Messages */}
         <Snackbar
           open={snackbarOpen}
           autoHideDuration={6000}

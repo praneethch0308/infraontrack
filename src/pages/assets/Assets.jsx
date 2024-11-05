@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Toolbar, Button, Box, TablePagination, Avatar, Typography, Autocomplete, TextField, Modal, IconButton, Menu, MenuItem } from '@mui/material';
 import Sidebar from '../../components/Sidebar';
-import { Edit, PanoramaFishEyeTwoTone, PersonAddAlt, RemoveRedEye, Share } from '@mui/icons-material';
+import { AddBox, Edit, RemoveRedEye, Share } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useAsset } from '../../context/assets/AssetContext';
 import axios from 'axios';
+import { useAsset } from '../../context/assets/AssetContext';
 
 const Assets = () => {
     const navigate = useNavigate();
@@ -14,14 +14,28 @@ const Assets = () => {
     const [qr, setQr] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [filters, setFilters] = useState({
-        assetName: null
+        assetName: null,
+        assetType: null  
     });
     const [assetName, setAssetName] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
+    const [assetTypes, setAssetTypes] = useState([]); 
 
     useEffect(() => {
         getAssets();
+        fetchAssetTypes(); 
     }, []);
+
+    const fetchAssetTypes = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_KEY}/list/system-list`);
+            if (response.data.status === "OK") {
+                setAssetTypes(response.data.data);
+            }
+        } catch (error) {
+            console.error('Error fetching asset types:', error);
+        }
+    };
 
     const handleViewQRCode = async (assetid, name) => {
         try {
@@ -88,18 +102,24 @@ const Assets = () => {
     };
 
     const handleAutoCompleteChange = (event, value, name) => {
-        setFilters((prevFilters) => ({
+        setFilters(( prevFilters) => ({
             ...prevFilters,
             [name]: value,
         }));
         setPage(0);
     };
+
     const handleEditAsset = (asset) => {
         navigate(`/asset-update`, { state: { asset } });
-      };
+    };
+
     const filteredAssets = Array.isArray(assets) ? assets.filter((asset) => {
-        return (!filters.assetName || asset.assetName === filters.assetName);
+        return (
+            (!filters.assetName || asset.assetName === filters.assetName) &&
+            (!filters.assetType || asset.type === filters.assetType) 
+        );
     }) : [];
+
     const paginatedAssets = filteredAssets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
     return (
@@ -109,25 +129,36 @@ const Assets = () => {
             </Grid>
             <Grid item xs style={{ paddingLeft: '20px', marginRight: '36px', overflowX: 'auto' }}>
                 <Toolbar />
-                <Box display="flex" justifyContent="flex-end" mb={5} mt={2}>
+                <Box display="flex" justifyContent="flex-end" mb={5} mt={2} borderRadius={20} >
                     <Button
                         variant="contained"
                         className='bg-[#002a5c] rounded -3xl'
                         onClick={() => navigate('/asset-create')}
-                    >     
+                    >
                         <span className='font-semibold'>Create Asset</span>
-                        <PersonAddAlt sx={{ height: '20px', width: '20px', ml: 1 }} />
+                        <AddBox sx={{ height: '20px', width: '20px', ml: 1 }} />
                     </Button>
                 </Box>
 
-                <Box>
+                <Box display={'flex'}>
                     <Box display={'flex'} alignItems={'center'} mb={3}>
-                        <Typography className="font -bold">Asset Name : </Typography>
+                        <Typography className="font-bold">Asset Name: </Typography>
                         <Autocomplete
-                            options={assets.map(department => department.assetName || '')}
+                            options={assets.map(asset => asset.assetName || '')}
                             value={filters.assetName || null}
                             onChange={(event, newValue) => handleAutoCompleteChange(event, newValue, 'assetName')}
                             renderInput={(params) => <TextField {...params} label="Select Asset Name" />}
+                            sx={{ width: 200, marginLeft: 2 }}
+                        />
+                    </Box>
+
+                    <Box display={'flex'} alignItems={'center'} mb={3} ml={3}>
+                        <Typography className="font-bold">Asset Type: </Typography>
+                        <Autocomplete
+                            options={assetTypes.map(type => type.name)} 
+                            value={filters.assetType || null}
+                            onChange={(event, newValue) => handleAutoCompleteChange(event, newValue, 'assetType')}
+                            renderInput={(params) => <TextField {...params} label="Select Asset Type" />}
                             sx={{ width: 200, marginLeft: 2 }}
                         />
                     </Box>
@@ -153,43 +184,43 @@ const Assets = () => {
                         </TableHead>
                         <TableBody>
                             {paginatedAssets.map((asset) => (
-                            <TableRow key={asset.id}>
-                            <TableCell className='text-center'>{asset.assetName}</TableCell>
-                            <TableCell className='text-center'>{asset.type}</TableCell>
-                            <TableCell className='text-center'>{asset.make}</TableCell>
-                            <TableCell className='text-center'>{asset.model}</TableCell>
-                            <TableCell className='text-center'>{asset.warrantyEndDate}</TableCell>
-                            <TableCell className='text-center'>{asset.underAMC ? '✅' : '❌'}</TableCell>
-                            <TableCell className='text-center'>{asset.status}</TableCell>
-                            <TableCell className='text-center'>{asset.underAMC}</TableCell>
-                            <TableCell className='text-center'>
-                                <Button
-                                    className='bg-green-700 text-white text-sm'
-                                    onClick={() => handleViewQRCode(asset.id, asset.assetName)}
-                                > View
-                            </Button>
-                            </TableCell>
-            <TableCell className='text-center'>{asset.isApprovedByPrinicipal ? '✅' : '❌'}</TableCell>
-            <TableCell className='text-center'>{asset.isApprovedByHOD ? '✅' : '❌'}</TableCell> 
-            <TableCell className='text-center'>
-                <div className='flex items-center justify-center'>
-                    <Button onClick={() => {
-                        navigate("/assetview", { state: { asset } });
-                    }}> <RemoveRedEye/> </Button>    
-                    <Button onClick={() => {
-                        handleEditAsset(asset);
-                    }}><Edit /></Button>
-                </div>
-            </TableCell>       
-            </TableRow>
-                     ))}
-            </TableBody>
+                                <TableRow key={asset.id}>
+                                    <TableCell className='text-center'>{asset.assetName}</TableCell>
+                                    <TableCell className='text-center'>{asset.type}</TableCell>
+                                    <TableCell className='text-center'>{asset.make}</TableCell>
+                                    <TableCell className='text-center'>{asset.model}</TableCell>
+                                    <TableCell className='text-center'>{asset.warrantyEndDate || "N/A"}</TableCell>
+                                    <TableCell className='text-center'>{asset.underAMC ? '✅' : '❌'}</TableCell>
+                                    <TableCell className='text-center'>{asset.status}</TableCell>
+                                    <TableCell className='text-center'>{asset.underAMC}</TableCell>
+                                    <TableCell className='text-center'>
+                                        <Button
+                                            className='bg-green-700 text-white text-sm'
+                                            onClick={() => handleViewQRCode(asset.id, asset.assetName)}
+                                        > View
+                                        </Button>   
+                                    </TableCell>
+                                    <TableCell className='text-center'>{asset.isApprovedByPrinicipal ? '✅' : '❌'}</TableCell>
+                                    <TableCell className='text-center'>{asset.isApprovedByHOD ? '✅' : '❌'}</TableCell> 
+                                    <TableCell className='text-center'>
+                                        <div className='flex items-center justify-center'>
+                                            <Button onClick={() => {
+                                                navigate("/assetview", { state: { asset } });
+                                            }}> <RemoveRedEye/> </Button>    
+                                            <Button onClick={() => {
+                                                handleEditAsset(asset);
+                                            }}><Edit /></Button>
+                                        </div>
+                                    </TableCell>       
+                                </TableRow>
+                            ))}
+                        </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[3, 5, 10, 25, 50]}
                     component="div"
-                    count={assets.length}
+                    count={filteredAssets.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

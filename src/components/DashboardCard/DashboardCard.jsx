@@ -8,7 +8,7 @@ import Sidebar from '../../components/Sidebar';
 
 const DashboardCard = ({title,count}) => {
   return (
-    <Card sx={{ minWidth: 280, marginTop: 5, backgroundColor: "#002a5c" }} className='rounded-2xl transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300'>
+    <Card sx={{ minWidth: 280, marginTop: 5 }} className='rounded-2xl bg-blue-50 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300'>
     <CardActionArea>
       <CardContent>
         <Box
@@ -25,7 +25,7 @@ const DashboardCard = ({title,count}) => {
             variant="h5"
             component="div"
             sx={{
-              color: 'white',
+              color: 'black',
               fontWeight: 'bold',
               textAlign: 'center',
               fontSize:28,
@@ -34,7 +34,7 @@ const DashboardCard = ({title,count}) => {
           >
             {title}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'white', textAlign: 'center',fontSize:28 }}>
+          <Typography variant="body2" sx={{ color: 'blue', textAlign: 'center',fontSize:28 }}>
             {count}
           </Typography>
         </Box>

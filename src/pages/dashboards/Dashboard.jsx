@@ -12,15 +12,15 @@ const Dashboard = () => {
     <Grid item xs style={{ paddingLeft: '20px', marginRight:'36px' }}>
         <Toolbar />
         <div className='flex justify-between m-4'>
-          <DashboardCard title={"Total Assets"} count={10} />
-          <DashboardCard title={"Total Departments"} count={10} />
-          <DashboardCard title={"Total Vendors"} count={10} />
+          <DashboardCard title={"Total Assets 📦"} count={10} />
+          <DashboardCard title={"Total Departments 🏢"} count={10} />
+          <DashboardCard title={"Total Vendors 💰"} count={10} />
 
         </div>
         <div className='flex justify-between m-4'>
-        <DashboardCard title={"Total Employees"} count={10} />
-          <DashboardCard title={"Total Locations"} count={10} />
-          <DashboardCard title={"Pending Approvals"} count={10}/>
+        <DashboardCard title={"Total Employees 👥"} count={10} />
+          <DashboardCard title={"Total Locations 📍"} count={10} />
+          <DashboardCard title={"Pending Approvals ✅"} count={10}/>
         </div>
 </Grid>
 </Grid>
