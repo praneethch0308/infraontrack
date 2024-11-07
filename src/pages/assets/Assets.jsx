@@ -168,6 +168,7 @@ const Assets = () => {
                     <Table>
                         <TableHead>
                             <TableRow sx={{ backgroundColor: '#002a5c', '& .MuiTableCell-root': { color: 'white', fontWeight: 'bold' } }}>
+                                <TableCell className='text-center'>Image</TableCell>
                                 <TableCell className='text-center'>Name</TableCell>
                                 <TableCell className='text-center'>Type</TableCell>
                                 <TableCell className='text-center'>Make</TableCell>
@@ -175,7 +176,6 @@ const Assets = () => {
                                 <TableCell className='text-center'>Warranty</TableCell>
                                 <TableCell className='text-center'>In AMC</TableCell>
                                 <TableCell className='text-center'>Status</TableCell>
-                                <TableCell className='text-center'>Image</TableCell>
                                 <TableCell className='text-center'>QR Code</TableCell>
                                 <TableCell className='text-center'>Approved by Principal</TableCell>
                                 <TableCell className='text-center'>Approved by HOD</TableCell>
@@ -185,16 +185,16 @@ const Assets = () => {
                         <TableBody>
                             {paginatedAssets.map((asset) => (
                                 <TableRow key={asset.id}>
+                                    <TableCell>
+                                       <Avatar src={asset.assetPicurl}/>
+                                    </TableCell>
                                     <TableCell className='text-center'>{asset.assetName}</TableCell>
                                     <TableCell className='text-center'>{asset.type}</TableCell>
                                     <TableCell className='text-center'>{asset.make}</TableCell>
                                     <TableCell className='text-center'>{asset.model}</TableCell>
                                     <TableCell className='text-center'>{asset.warrantyEndDate || "N/A"}</TableCell>
                                     <TableCell className='text-center'>{asset.underAMC ? '✅' : '❌'}</TableCell>
-                                    <TableCell className='text-center'>{asset.status}</TableCell>
-                                    <TableCell>
-                                       <Avatar src={asset.assetPicurl}/>
-                                    </TableCell>
+                                    <TableCell className='text-center'>{asset.status}</TableCell> 
                                     <TableCell className='text-center'>
                                         <Button
                                             className='bg-green-700 text-white text-sm'
