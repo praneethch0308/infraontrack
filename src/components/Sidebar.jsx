@@ -77,6 +77,16 @@ const Sidebar = () => {
             { path: '/change-password', icon: '🔑', label: 'Change Password' },
             { path: '/lists', icon: '📝', label: 'Lists' }
         ],
+        USER: [
+            { path: '/dashboard', icon: '🏠', label: 'Dashboard' },
+            { path: '/assets', icon: '📦', label: 'Assets' },
+            { path: '/vendors', icon: '💰', label: 'Vendors' },
+            { path: '/employees', icon: '👥', label: 'Employees' },
+            { path: '/locations', icon: '📍', label: 'Locations' },
+            { path: '/departments', icon: '🏢', label: 'Departments' },
+            { path: '/change-password', icon: '🔑', label: 'Change Password' },
+            { path: '/lists', icon: '📝', label: 'Lists' }
+        ],
         
     };
 

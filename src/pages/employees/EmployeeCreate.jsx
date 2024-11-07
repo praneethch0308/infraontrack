@@ -37,6 +37,7 @@ const EmployeeCreate = () => {
     const { createEmployee, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useContext(EmployeeContext);
     const { departments = [], getDepts } = useDept();
 
+    const [selectedFile, setSelectedFile] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
 
     const { handleSubmit, control, formState: { errors } } = useForm({
@@ -56,13 +57,16 @@ const EmployeeCreate = () => {
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        setSelectedImage(URL.createObjectURL(file));
+        if (file) {
+            setSelectedFile(file);
+            setSelectedImage(URL.createObjectURL(file));
+        }
     };
 
     const onSubmit = (data) => {
         const { empName, email, designation, status, phoneNumber, department } = data;
-
-        const employee = new Employee();
+        const formdata = new FormData();
+        const employee = {}
         employee.name = empName;
         employee.designation = designation;
         employee.phoneNum = phoneNumber;
@@ -70,7 +74,9 @@ const EmployeeCreate = () => {
         employee.status = status;
         employee.deptInfoDto = { id: department };
         console.log(employee);
-        createEmployee(employee, navigate);
+        formdata.append("empDTo", JSON.stringify(employee));
+        formdata.append("file",selectedFile)
+        createEmployee(formdata, navigate);
     };
 
     const VisuallyHiddenInput = styled('input')({

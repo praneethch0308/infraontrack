@@ -31,7 +31,7 @@ const AssetCreate = () => {
     purchaseDate: '',
     isUnderWarranty: false,
     warrantyEndDate: '',
-    amcendDate: '',
+    amcEndDate: '',
     underAMC: false,
     status: '',
     phoneNum: '',
@@ -40,9 +40,10 @@ const AssetCreate = () => {
     vendorInfoDto: '',
     employeeDto: '',
     isApprovedByHOD: false,
-    isApprovedByPrinicipal: false,
+    isApprovedByPrincipal: false,
   });
 
+  const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const { createAsset, snackbarOpen, snackbarMessage, snackbarSeverity, closeSnackbar } = useAsset();
   const { departments = [], getDepts } = useDept();
@@ -62,11 +63,15 @@ const AssetCreate = () => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setSelectedImage(URL.createObjectURL(file));
-  };
+    if (file) {
+        setSelectedFile(file);
+        setSelectedImage(URL.createObjectURL(file));
+    }
+};
 const username= localStorage.getItem('userName')
   const handleSubmit = (e) => {
     e.preventDefault();
+    const formdata= new FormData();
     const asset = {
       ...formValues,
       deptInfoDto: { id: formValues.deptInfoDto },
@@ -75,7 +80,10 @@ const username= localStorage.getItem('userName')
       employeeDto: { id: formValues.employeeDto },
       username: username
     };
-    createAsset(asset, navigate);
+    console.log('asset',asset)
+    formdata.append('assetDTo', JSON.stringify(asset));
+    formdata.append('file',selectedFile);
+    createAsset(formdata, navigate);
   };
 
   const VisuallyHiddenInput = styled('input')({
@@ -485,9 +493,9 @@ const username= localStorage.getItem('userName')
               </FormLabel>
               <TextField
                 fullWidth
-                name="amcendDate"
+                name="amcEndDate"
                 type="date"
-                value={formValues.amcendDate}
+                value={formValues.amcEndDate}
                 onChange={handleChange}
                 sx={{ mb: 2, backgroundColor: 'white' }}
                 className="w-full rounded-md"

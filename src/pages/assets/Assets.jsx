@@ -192,7 +192,9 @@ const Assets = () => {
                                     <TableCell className='text-center'>{asset.warrantyEndDate || "N/A"}</TableCell>
                                     <TableCell className='text-center'>{asset.underAMC ? '✅' : '❌'}</TableCell>
                                     <TableCell className='text-center'>{asset.status}</TableCell>
-                                    <TableCell className='text-center'>{asset.underAMC}</TableCell>
+                                    <TableCell>
+                                       <Avatar src={asset.assetPicurl}/>
+                                    </TableCell>
                                     <TableCell className='text-center'>
                                         <Button
                                             className='bg-green-700 text-white text-sm'

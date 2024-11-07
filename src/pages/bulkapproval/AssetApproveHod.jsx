@@ -14,18 +14,18 @@ const  AssetApproveHod = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-
+const baseUrl= process.env.REACT_APP_API_KEY
     const handleApprove = async () => {
         try {
            
             const role = localStorage.getItem('role');
-            console.log("Role retrieved from localStorage:", role); // Debugging line
+            console.log("Role retrieved from localStorage:", role); 
             console.log(asset.id);
-            const response = await axios.post(`http://localhost:9090/api/assets/approve/hod/${asset.id}`);
+            const response = await axios.post(`${baseUrl}/api/assets/approve/hod/${asset.id}`);
             console.log(response.data);
           
 
-            console.log("API response:", response.data); // Debugging line
+            console.log("API response:", response.data);
             setSnackbarMessage('Asset approved successfully');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);

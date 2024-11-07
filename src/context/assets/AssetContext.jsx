@@ -82,7 +82,11 @@ export const AssetProvider = ({ children }) => {
       };
 const createAsset = async (asset, navigate) => {
     try {
-        const response = await axios.post(`${baseURl}/api/assets/create`, asset);
+        const response = await axios.post(`${baseURl}/api/assets/create`, asset,{
+            headers: {
+                'Content-Type':'multi-part/form-data'
+              },
+        });
         if (response.status === 200) {
             setSnackbarMessage('Asset created successfully!');
             setSnackbarSeverity('success');

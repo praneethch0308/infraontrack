@@ -22,7 +22,11 @@ const accessToken=localStorage.getItem('token');
       };
       const createEmployee = async (employee, navigate) => {
         try {
-            const response = await axios.post(`${host}/employees/save`, employee);
+            const response = await axios.post(`${host}/employees/save`, employee,{
+              headers: {
+                'Content-Type':'multi-part/form-data'
+              },
+            });
             if (response.status === 200) {
                 setSnackbarMessage('Employee created successfully!');
                 setSnackbarSeverity('success');

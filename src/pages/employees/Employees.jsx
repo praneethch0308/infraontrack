@@ -70,9 +70,7 @@ const Employees = () => {
                             {paginatedemployees.map((employee) => (
                                 <TableRow key={employee.id}>
                                     <TableCell>
-                                        <Avatar sx={{ backgroundColor: '#003366', color: '#fff' }}>
-                                            {employee.name.charAt(0)}
-                                        </Avatar>
+                                       <Avatar src={employee.profilePicUrl}/>
                                     </TableCell>
                                     <TableCell>{employee.name}</TableCell>
                                     <TableCell>{employee.designation}</TableCell>
