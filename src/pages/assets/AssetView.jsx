@@ -16,7 +16,7 @@ const AssetView = () => {
 
     const fetchAssetHistory = async () => {
         try {
-            const response = await axios.get(`http://localhost:9090/history/${asset.id}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_KEY}/history/${asset.id}`);
             setAssetHistory(response.data.data); 
             setOpenModal(true);
         } catch (error) {
@@ -70,7 +70,6 @@ const AssetView = () => {
                         <AssetDetails title={"Approved by HOD "} value={asset.isApprovedByHOD ? "Yes" : "No"} />
                     </div>
                 </div>
-
                 <Modal open={openModal} onClose={() => setOpenModal(false)}>
                     <Box sx={{
                         position: 'absolute',

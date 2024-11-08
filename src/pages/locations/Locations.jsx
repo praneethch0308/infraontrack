@@ -111,8 +111,7 @@ const Locations = () => {
                             <PersonAddAlt sx={{ height: '20px', width: '20px', ml: 1 }} />
                         </Button>
                     </Box>
-                </Box>
-
+                </Box>    
                 <TableContainer component={Paper}>
                     <Table id="LocationsTable">
                         <TableHead>
